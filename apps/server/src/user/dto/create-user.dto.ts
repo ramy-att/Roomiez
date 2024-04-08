@@ -1,5 +1,4 @@
 import { IsEmail, IsNotEmpty } from 'class-validator';
-import { IsValidPhoneNumber } from '../user.validators';
 import { Validate } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
@@ -27,16 +26,4 @@ export class CreateUserDto {
   @ApiProperty()
   @IsNotEmpty()
   name: string;
-
-  /**
-   * The phone number of the user.
-   */
-  @Validate(IsValidPhoneNumber)
-  @IsNotEmpty()
-  @ApiProperty()
-  phoneNumber: string;
-
-  @IsNotEmpty()
-  @ApiProperty()
-  registrationKey: string;
 }

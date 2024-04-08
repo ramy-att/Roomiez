@@ -35,14 +35,12 @@ export const UserSchema = new mongoose.Schema<UserEntity, UserModel>(
 );
 
 /**
- * Indices for uniqueness
+ * Indices for uniqeness
  */
 
 export const UserUniqueEmailIndex = 'email_1';
-export const UserUniquePhoneNumberIndex = 'phoneNumber_1';
 
 UserSchema.index({ email: 1 }, { unique: true });
-UserSchema.index({ phoneNumber: 1 }, { unique: true });
 
 /**
  * Middleware function that automatically hashes the password before saving it to the database.
@@ -63,5 +61,4 @@ UserSchema.pre('save', async function (next) {
     return next(error);
   }
 });
-
-export default mongoose.model('User', new mongoose.Schema(UserSchema));
+export default mongoose.model('User', new mongoose.Schema(UserSchema as any));

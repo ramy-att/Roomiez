@@ -1,17 +1,11 @@
 import {
   BadRequestException,
-  Inject,
   Injectable,
   NotFoundException,
-  forwardRef,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import {
-  UserEntity,
-  UserUniqueEmailIndex,
-  UserUniquePhoneNumberIndex,
-} from './entities/user.entity';
+import { UserEntity, UserUniqueEmailIndex } from './entities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
@@ -46,8 +40,7 @@ export class UserService {
     createUserDto: CreateUserDto,
     image?: Express.Multer.File,
   ): Promise<UserEntity> {
-    const { email, password, name, phoneNumber, registrationKey } =
-      createUserDto;
+    const { email, password, name } = createUserDto;
 
     const { imageUrl, imageId } = await this.uploadProfileImage(image);
 
@@ -56,7 +49,6 @@ export class UserService {
       email,
       password,
       name,
-      phoneNumber,
       imageUrl,
       imageId,
     });
@@ -117,7 +109,7 @@ export class UserService {
     updateUserDto: UpdateUserDto,
     image?: Express.Multer.File,
   ): Promise<UserEntity> {
-    const { name, email, newPassword, phoneNumber } = updateUserDto;
+    const { name, email, newPassword } = updateUserDto;
 
     // Find the user by id
     const user = await this.userModel.findById(id);
@@ -129,16 +121,6 @@ export class UserService {
       if (!!isUserAlreadyExist)
         throw new BadRequestException({
           message: 'Email in use by another user.',
-        });
-    }
-
-    if (user.phoneNumber != phoneNumber) {
-      const isUserAlreadyExist = await this.userModel.exists({
-        phoneNumber: phoneNumber,
-      });
-      if (!!isUserAlreadyExist)
-        throw new BadRequestException({
-          message: 'Phone number in use by another user.',
         });
     }
 
@@ -155,7 +137,6 @@ export class UserService {
 
     user.name = name;
     user.email = email;
-    user.phoneNumber = phoneNumber;
 
     try {
       const entity = await this.userModel.findByIdAndUpdate(user._id, user);
@@ -179,9 +160,6 @@ export class UserService {
     if (error instanceof MongoServerError && error.code === 11000) {
       if (error?.message.includes(UserUniqueEmailIndex))
         errorDescription = 'A user with the same email exists';
-
-      if (error?.message.includes(UserUniquePhoneNumberIndex))
-        errorDescription = 'A user with the same phone number already exists';
     }
 
     return errorDescription;

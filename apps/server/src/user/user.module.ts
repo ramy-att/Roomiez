@@ -3,7 +3,6 @@ import { UserService } from './user.service';
 import { UserController } from './user.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserSchema } from './entities/user.entity';
-import { IsValidRole } from './user.validators';
 import { CloudinaryModule } from '../cloudinary/cloudinary.module';
 
 /**
@@ -15,7 +14,7 @@ import { CloudinaryModule } from '../cloudinary/cloudinary.module';
     CloudinaryModule,
   ],
   controllers: [UserController],
-  providers: [UserService, IsValidRole],
+  providers: [UserService],
   exports: [UserService, UserModule],
 })
 export class UserModule {}
