@@ -7,6 +7,7 @@ import { signupSchema } from "./utils";
 import { FormError } from "../../components/formError/FormError";
 import axios from "axios";
 import CustomInput from "../../components/customInput/CustomInput";
+import { useToast } from "client/src/@/components/ui/toast/use-toast";
 
 interface ISignUp {
   name: string;
@@ -14,6 +15,8 @@ interface ISignUp {
   password: string;
 }
 export const SignUp = () => {
+  const { toast } = useToast();
+
   return (
     <Formik
       initialValues={{ email: "", password: "", name: "" } as ISignUp}
@@ -21,6 +24,10 @@ export const SignUp = () => {
       onSubmit={(values, { setSubmitting }) => {
         axios.post("http://localhost:4000/user", { ...values }).then((res) => {
           setSubmitting(false);
+          toast({
+            title: "Signed Up!",
+            description: "Signed up successfully! Log in to get started!",
+          });
         });
       }}
     >
