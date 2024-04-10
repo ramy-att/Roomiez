@@ -1,12 +1,12 @@
 import { Button } from "client/src/@/components/ui/button";
 import "../../index.css";
-import { Input } from "client/src/@/components/ui/input";
-import { Label } from "client/src/@/components/ui/label";
 import { Form, Formik } from "formik";
 import waveEmoji from "../../assets/waving-hand-sign.svg";
-import spinner from "../../assets/spinner.svg";
+import { default as spinner } from "../../assets/spinner.svg";
 import { signupSchema } from "./utils";
 import { FormError } from "../../components/formError/FormError";
+import axios from "axios";
+import CustomInput from "../../components/customInput/CustomInput";
 
 interface ISignUp {
   name: string;
@@ -19,10 +19,9 @@ export const SignUp = () => {
       initialValues={{ email: "", password: "", name: "" } as ISignUp}
       validationSchema={signupSchema}
       onSubmit={(values, { setSubmitting }) => {
-        setTimeout(() => {
-          alert(JSON.stringify(values, null, 2));
+        axios.post("http://localhost:4000/user", { ...values }).then((res) => {
           setSubmitting(false);
-        }, 400);
+        });
       }}
     >
       {({ handleSubmit, isSubmitting }) => (
@@ -35,27 +34,38 @@ export const SignUp = () => {
               Join Now to Meet New Roommates!
             </p>
             <div className="mb-4">
-              <Label htmlFor="name">Name</Label>
-              <Input placeholder="John Doe" />
+              <CustomInput name="name" label="Name" placeholder="John Doe" />
               <FormError name="name" />
             </div>
             <div className="mb-4">
-              <Label htmlFor="email">Email</Label>
-              <Input type="email" placeholder="john@email.com" />
+              <CustomInput
+                name="email"
+                label="Email"
+                type="email"
+                placeholder="john@email.com"
+              />
               <FormError name="email" />
             </div>
             <div className="mb-6">
-              <Label htmlFor="password">Password</Label>
-              <Input type="password" placeholder="******" />
+              <CustomInput
+                label="Password"
+                name="password"
+                type="password"
+                placeholder="******"
+              />
               <FormError name="password" />
             </div>
             <div className="mb-6 text-md italic underline text-center">
               <a href="">Already Signed Up? Sign In Instead</a>
             </div>
             <div className="text-center">
-              <Button onClick={() => handleSubmit()} className="w-1/2 h-10">
-                {isSubmitting && spinner}
-                {isSubmitting ? "Logging In..." : "Log In"}
+              <Button
+                type="submit"
+                onClick={() => handleSubmit()}
+                className="w-1/2 h-10"
+              >
+                {isSubmitting && <img src={spinner} />}
+                {isSubmitting ? "Signing you up..." : "Sign Up"}
               </Button>
             </div>
           </Form>

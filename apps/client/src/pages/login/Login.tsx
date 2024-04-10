@@ -1,12 +1,11 @@
 import { Button } from "client/src/@/components/ui/button";
-import "../../index.css";
-import { Input } from "client/src/@/components/ui/input";
-import { Label } from "client/src/@/components/ui/label";
 import { Form, Formik } from "formik";
 import waveEmoji from "../../assets/waving-hand-sign.svg";
 import spinner from "../../assets/spinner.svg";
 import { signinSchema } from "./utils";
 import { FormError } from "../../components/formError/FormError";
+import CustomInput from "../../components/customInput/CustomInput";
+import axios from "axios";
 
 interface ISignIn {
   email: string;
@@ -19,10 +18,11 @@ export const Login = () => {
       initialValues={{ email: "", password: "" } as ISignIn}
       validationSchema={signinSchema}
       onSubmit={(values, { setSubmitting }) => {
-        setTimeout(() => {
-          alert(JSON.stringify(values, null, 2));
-          setSubmitting(false);
-        }, 400);
+        axios
+          .post("http://localhost:4000/auth/login", { ...values })
+          .then((res) => {
+            setSubmitting(false);
+          });
       }}
     >
       {({ handleSubmit, isSubmitting }) => (
@@ -35,13 +35,21 @@ export const Login = () => {
               Log in to your existing account!
             </p>
             <div className="mb-4">
-              <Label htmlFor="email">Email</Label>
-              <Input type="email" placeholder="Email" />
+              <CustomInput
+                name="email"
+                label="Email"
+                type="email"
+                placeholder="john@email.com"
+              />
               <FormError name="email" />
             </div>
             <div className="mb-6">
-              <Label htmlFor="password">Password</Label>
-              <Input type="password" placeholder="******" />
+              <CustomInput
+                label="Password"
+                name="password"
+                type="password"
+                placeholder="******"
+              />
               <FormError name="password" />
             </div>
             <div className="mb-6 text-md italic underline text-center">
