@@ -22,21 +22,24 @@ export const SignUp = () => {
     <Formik
       initialValues={{ email: "", password: "", name: "" } as ISignUp}
       validationSchema={signupSchema}
-      onSubmit={(values, { setSubmitting }) => {
+      onSubmit={(values, { setSubmitting, resetForm }) => {
         axios
           .post("http://localhost:4000/user", { ...values })
           .then((res) => {
-            setSubmitting(false);
             toast({
               title: "Signed Up!",
               description: "Signed up successfully! Log in to get started!",
             });
+            resetForm();
           })
           .catch((e) => {
             toast({
               title: "Could not sign up!",
               description: e.response.data.message,
             });
+          })
+          .finally(() => {
+            setSubmitting(false);
           });
       }}
     >
@@ -80,7 +83,9 @@ export const SignUp = () => {
                 onClick={() => handleSubmit()}
                 className="w-1/2 h-10"
               >
-                {isSubmitting && <img src={spinner} />}
+                {isSubmitting && (
+                  <img className="animate-spin w-4" src={spinner} />
+                )}
                 {isSubmitting ? "Signing you up..." : "Sign Up"}
               </Button>
             </div>

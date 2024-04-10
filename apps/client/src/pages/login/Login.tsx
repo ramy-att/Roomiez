@@ -8,7 +8,7 @@ import CustomInput from "../../components/customInput/CustomInput";
 import axios from "axios";
 import { Routes } from "../../utils";
 import { signIn } from "../../slices/AuthSlice";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useToast } from "client/src/@/components/ui/toast/use-toast";
 
 interface ISignIn {
@@ -24,15 +24,15 @@ export const Login = () => {
     <Formik
       initialValues={{ email: "", password: "" } as ISignIn}
       validationSchema={signinSchema}
-      onSubmit={(values, { setSubmitting }) => {
+      onSubmit={(values, { setSubmitting, resetForm }) => {
         axios
           .post("http://localhost:4000/auth/login", { ...values })
           .then((res) => {
-            setSubmitting(false);
-            if (res.data.token) {
+            if (res?.data?.token) {
               dispatch(
                 signIn({ email: res.data.user.email, token: res.data.token })
               );
+              resetForm();
             }
           })
           .catch((e) => {
@@ -40,6 +40,9 @@ export const Login = () => {
               title: "Could not sign in!",
               description: e.response.data.message,
             });
+          })
+          .finally(() => {
+            setSubmitting(false);
           });
       }}
     >
@@ -74,8 +77,13 @@ export const Login = () => {
               <a href={Routes.SIGN_UP}>No Account? Sign Up Instead</a>
             </div>
             <div className="text-center">
-              <Button onClick={() => handleSubmit()} className="w-1/2 h-10">
-                {isSubmitting && spinner}
+              <Button
+                onClick={() => handleSubmit()}
+                className="gap-1 w-1/2 h-10"
+              >
+                {isSubmitting && (
+                  <img className="animate-spin w-4" src={spinner} />
+                )}
                 {isSubmitting ? "Logging In..." : "Log In"}
               </Button>
             </div>
