@@ -6,6 +6,7 @@ import { signinSchema } from "./utils";
 import { FormError } from "../../components/formError/FormError";
 import CustomInput from "../../components/customInput/CustomInput";
 import axios from "axios";
+import { Routes } from "../../utils";
 
 interface ISignIn {
   email: string;
@@ -53,7 +54,7 @@ export const Login = () => {
               <FormError name="password" />
             </div>
             <div className="mb-6 text-md italic underline text-center">
-              <a href="">No Account? Sign Up Instead</a>
+              <a href={Routes.SIGN_UP}>No Account? Sign Up Instead</a>
             </div>
             <div className="text-center">
               <Button onClick={() => handleSubmit()} className="w-1/2 h-10">

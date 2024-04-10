@@ -8,6 +8,7 @@ import { FormError } from "../../components/formError/FormError";
 import axios from "axios";
 import CustomInput from "../../components/customInput/CustomInput";
 import { useToast } from "client/src/@/components/ui/toast/use-toast";
+import { Routes } from "../../utils";
 
 interface ISignUp {
   name: string;
@@ -63,7 +64,7 @@ export const SignUp = () => {
               <FormError name="password" />
             </div>
             <div className="mb-6 text-md italic underline text-center">
-              <a href="">Already Signed Up? Sign In Instead</a>
+              <a href={Routes.LOGIN}>Already Signed Up? Sign In Instead</a>
             </div>
             <div className="text-center">
               <Button
