@@ -12,8 +12,7 @@ import { AuthModule } from './auth/auth.module';
   imports: [
     ConfigModule.forRoot(),
     MongooseModule.forRoot(
-      process.env.MONGO_CONNECTION_URI ||
-        'mongodb+srv://soen363p:UMYabQvM9nJ8XJLQ@cluster0.ihs3dcw.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0', // TODO: Move password to env
+      'mongodb+srv://soen363p:UMYabQvM9nJ8XJLQ@cluster0.ihs3dcw.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0',
     ),
     UserModule,
     AuthModule,
