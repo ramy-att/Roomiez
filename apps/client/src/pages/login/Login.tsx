@@ -29,17 +29,17 @@ export const Login = () => {
           .post("http://localhost:4000/auth/login", { ...values })
           .then((res) => {
             setSubmitting(false);
-            console.log(res);
             if (res.data.token) {
               dispatch(
                 signIn({ email: res.data.user.email, token: res.data.token })
               );
-            } else {
-              toast({
-                title: "Authorized!",
-                description: "Incorrect email and password combination.",
-              });
             }
+          })
+          .catch((e) => {
+            toast({
+              title: "Could not sign in!",
+              description: e.response.data.message,
+            });
           });
       }}
     >

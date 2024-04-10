@@ -23,13 +23,21 @@ export const SignUp = () => {
       initialValues={{ email: "", password: "", name: "" } as ISignUp}
       validationSchema={signupSchema}
       onSubmit={(values, { setSubmitting }) => {
-        axios.post("http://localhost:4000/user", { ...values }).then((res) => {
-          setSubmitting(false);
-          toast({
-            title: "Signed Up!",
-            description: "Signed up successfully! Log in to get started!",
+        axios
+          .post("http://localhost:4000/user", { ...values })
+          .then((res) => {
+            setSubmitting(false);
+            toast({
+              title: "Signed Up!",
+              description: "Signed up successfully! Log in to get started!",
+            });
+          })
+          .catch((e) => {
+            toast({
+              title: "Could not sign up!",
+              description: e.response.data.message,
+            });
           });
-        });
       }}
     >
       {({ handleSubmit, isSubmitting }) => (
