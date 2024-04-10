@@ -7,6 +7,9 @@ import { FormError } from "../../components/formError/FormError";
 import CustomInput from "../../components/customInput/CustomInput";
 import axios from "axios";
 import { Routes } from "../../utils";
+import { signIn } from "../../slices/AuthSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { useToast } from "client/src/@/components/ui/toast/use-toast";
 
 interface ISignIn {
   email: string;
@@ -14,6 +17,9 @@ interface ISignIn {
 }
 
 export const Login = () => {
+  const dispatch = useDispatch();
+  const { toast } = useToast();
+
   return (
     <Formik
       initialValues={{ email: "", password: "" } as ISignIn}
@@ -23,6 +29,17 @@ export const Login = () => {
           .post("http://localhost:4000/auth/login", { ...values })
           .then((res) => {
             setSubmitting(false);
+            console.log(res);
+            if (res.data.token) {
+              dispatch(
+                signIn({ email: res.data.user.email, token: res.data.token })
+              );
+            } else {
+              toast({
+                title: "Authorized!",
+                description: "Incorrect email and password combination.",
+              });
+            }
           });
       }}
     >
