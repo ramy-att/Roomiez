@@ -8,8 +8,12 @@ export const Login = () => {
   return (
     <div className="w-full flex justify-center">
       <form className="p-10 rounded-2xl	bg-gray-300 w-2/4">
-        <h1>Login Now!</h1>
-        <p>Login to your existing account</p>
+        <h1>Join Now!</h1>
+        <p>Create a new account below!</p>
+        <div>
+          <Label htmlFor="name">Name</Label>
+          <Input type="name" placeholder="John DOe" />
+        </div>
         <div>
           <Label htmlFor="email">Email</Label>
           <Input type="email" placeholder="Email" />
@@ -19,9 +23,9 @@ export const Login = () => {
           <Input type="password" placeholder="******" />
         </div>
         <div>
-          <a href="">No Account? Sign Up Instead</a>
+          <a href="">Already Signed Up? Sign In Instead</a>
         </div>
-        <Button>Log In</Button>
+        <Button>Sign Up</Button>
       </form>
     </div>
   );
