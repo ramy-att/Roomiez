@@ -1,14 +1,21 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes as ReactRoutes } from "react-router-dom";
 import "./App.css";
 import { Login } from "./pages/login/Login";
+import { SignUp } from "./pages/signUp/SignUp";
+import { Toaster } from "client/src/@/components/ui/toast/Toaster";
+import { Routes } from "./utils";
 import { MainPage } from "./pages/Main-page/main";
 
 function App() {
   return (
-    <Routes>
-      <Route path="/login" element={<Login />} />
-      <Route path="/main" element={<MainPage />} />
-    </Routes>
+    <>
+      <Toaster />
+      <ReactRoutes>
+        <Route path={Routes.LOGIN} element={<Login />} />
+        <Route path={Routes.SIGN_UP} element={<SignUp />} />
+        <Route path="/main" element={<MainPage />} />
+      </ReactRoutes>
+    </>
   );
 }
 

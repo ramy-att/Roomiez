@@ -1,43 +1,40 @@
 import { Button } from "client/src/@/components/ui/button";
+import "../../index.css";
 import { Form, Formik } from "formik";
 import waveEmoji from "../../assets/waving-hand-sign.svg";
-import spinner from "../../assets/spinner.svg";
-import { signinSchema } from "./utils";
+import { default as spinner } from "../../assets/spinner.svg";
+import { signupSchema } from "./utils";
 import { FormError } from "../../components/formError/FormError";
-import CustomInput from "../../components/customInput/CustomInput";
 import axios from "axios";
-import { Routes } from "../../utils";
-import { signIn } from "../../slices/AuthSlice";
-import { useDispatch } from "react-redux";
+import CustomInput from "../../components/customInput/CustomInput";
 import { useToast } from "client/src/@/components/ui/toast/use-toast";
+import { Routes } from "../../utils";
 
-interface ISignIn {
+interface ISignUp {
+  name: string;
   email: string;
   password: string;
 }
-
-export const Login = () => {
-  const dispatch = useDispatch();
+export const SignUp = () => {
   const { toast } = useToast();
 
   return (
     <Formik
-      initialValues={{ email: "", password: "" } as ISignIn}
-      validationSchema={signinSchema}
+      initialValues={{ email: "", password: "", name: "" } as ISignUp}
+      validationSchema={signupSchema}
       onSubmit={(values, { setSubmitting, resetForm }) => {
         axios
-          .post("http://localhost:4000/auth/login", { ...values })
+          .post("http://localhost:4000/user", { ...values })
           .then((res) => {
-            if (res?.data?.token) {
-              dispatch(
-                signIn({ email: res.data.user.email, token: res.data.token })
-              );
-              resetForm();
-            }
+            toast({
+              title: "Signed Up!",
+              description: "Signed up successfully! Log in to get started!",
+            });
+            resetForm();
           })
           .catch((e) => {
             toast({
-              title: "Could not sign in!",
+              title: "Could not sign up!",
               description: e.response.data.message,
             });
           })
@@ -50,11 +47,15 @@ export const Login = () => {
         <div className="w-full h-screen flex justify-center items-center">
           <Form className="p-10 rounded-2xl	bg-gray-300 md:w-2/4 w-3/4">
             <h1 className="text-xl flex font-bold justify-center items-center gap-2 mb-4">
-              Login Now! <img className="w-10" src={waveEmoji} />
+              Join Now! <img className="w-10" src={waveEmoji} />
             </h1>
             <p className="text-md text-center mb-8">
-              Log in to your existing account!
+              Join Now to Meet New Roommates!
             </p>
+            <div className="mb-4">
+              <CustomInput name="name" label="Name" placeholder="John Doe" />
+              <FormError name="name" />
+            </div>
             <div className="mb-4">
               <CustomInput
                 name="email"
@@ -74,17 +75,18 @@ export const Login = () => {
               <FormError name="password" />
             </div>
             <div className="mb-6 text-md italic underline text-center">
-              <a href={Routes.SIGN_UP}>No Account? Sign Up Instead</a>
+              <a href={Routes.LOGIN}>Already Signed Up? Sign In Instead</a>
             </div>
             <div className="text-center">
               <Button
+                type="submit"
                 onClick={() => handleSubmit()}
-                className="gap-1 w-1/2 h-10"
+                className="w-1/2 h-10"
               >
                 {isSubmitting && (
                   <img className="animate-spin w-4" src={spinner} />
                 )}
-                {isSubmitting ? "Logging In..." : "Log In"}
+                {isSubmitting ? "Signing you up..." : "Sign Up"}
               </Button>
             </div>
           </Form>
