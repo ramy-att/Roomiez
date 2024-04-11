@@ -10,13 +10,14 @@ const Tag = ({ text }: { text: string }) => {
 };
 export const ListingCard = ({ listing }: { listing: any }) => {
   return (
-    <Card key={listing.description} className="w-1/4 min-w-[300px]">
-      {/* h-80 text-ellipsis overflow-hidden */}
+    <Card
+      key={listing.description}
+      className="w-1/4 min-w-[300px] transition-transform duration-300 transform hover:scale-105 hover:cursor-pointer"
+    >
       <CardHeader>
         <img className="h-34" src={listing.href} />
       </CardHeader>
       <CardContent>
-        {/* className="max-h-28" */}
         <div className="flex justify-center gap-2 mb-2">
           <img className="w-6" src={locationIcon} />
           {listing.location}

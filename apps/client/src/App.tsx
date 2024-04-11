@@ -5,10 +5,12 @@ import { SignUp } from "./pages/signUp/SignUp";
 import { Toaster } from "client/src/@/components/ui/toast/Toaster";
 import { Routes } from "./utils";
 import { Main } from "./pages/main/Main";
+import Navbar from "./components/navbar/Navbar";
 
 function App() {
   return (
     <>
+      <Navbar />
       <Toaster />
       <ReactRoutes>
         <Route path={Routes.LOGIN} element={<Login />} />
