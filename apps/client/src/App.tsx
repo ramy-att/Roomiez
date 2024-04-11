@@ -4,7 +4,7 @@ import { Login } from "./pages/login/Login";
 import { SignUp } from "./pages/signUp/SignUp";
 import { Toaster } from "client/src/@/components/ui/toast/Toaster";
 import { Routes } from "./utils";
-import { MainPage } from "./pages/Main-page/main";
+import { Main } from "./pages/main/Main";
 
 function App() {
   return (
@@ -13,7 +13,7 @@ function App() {
       <ReactRoutes>
         <Route path={Routes.LOGIN} element={<Login />} />
         <Route path={Routes.SIGN_UP} element={<SignUp />} />
-        <Route path="/main" element={<MainPage />} />
+        <Route path={Routes.MAIN} element={<Main />} />
       </ReactRoutes>
     </>
   );

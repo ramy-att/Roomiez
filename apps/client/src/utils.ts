@@ -3,6 +3,7 @@ export enum APIRoutes {
 }
 
 export enum Routes {
+  MAIN = "/",
   LOGIN = "/login",
   SIGN_UP = "/signup",
 }
