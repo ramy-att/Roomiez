@@ -8,7 +8,7 @@ export const MyListings = () => {
   const navigate = useNavigate();
 
   const onClickHandler = (idx: number) => {
-    //   navigate(``)
+    navigate(`${idx}`);
   };
 
   return (
