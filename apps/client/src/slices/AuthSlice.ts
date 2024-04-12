@@ -5,21 +5,24 @@ export const authSlice = createSlice({
   initialState: {
     token: "",
     email: "",
+    name: "",
   },
   reducers: {
     signIn: (state, action) => {
       state.token = action.payload.token;
       state.email = action.payload.email;
+      state.name = action.payload.name;
     },
     signOut: (_state, _action) => {
       return {
         token: "",
         email: "",
+        name: "",
       };
     },
   },
 });
 
-export const { signIn } = authSlice.actions;
+export const { signIn, signOut } = authSlice.actions;
 
 export default authSlice.reducer;
