@@ -7,6 +7,8 @@ import { Routes } from "./utils";
 import { Listings } from "./pages/listings/Listings";
 import Navbar from "./components/navbar/Navbar";
 import { MyListings } from "./pages/myListings/MyListings";
+import { MyListing } from "./pages/myListings/myListing/MyListing";
+import { Listing } from "./pages/listings/Listing/Listing";
 
 function App() {
   return (
@@ -17,7 +19,9 @@ function App() {
         <Route path={Routes.LOGIN} element={<Login />} />
         <Route path={Routes.SIGN_UP} element={<SignUp />} />
         <Route path={Routes.LISTINGS} element={<Listings />} />
+        <Route path={`${Routes.LISTINGS}/:id`} element={<Listing />} />
         <Route path={Routes.MY_LISTINGS} element={<MyListings />} />
+        <Route path={`${Routes.MY_LISTINGS}/:id`} element={<MyListing />} />
       </ReactRoutes>
     </>
   );

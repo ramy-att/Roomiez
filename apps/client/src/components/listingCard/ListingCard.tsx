@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader } from "client/src/@/components/ui/card";
 import locationIcon from "../../assets/location.svg";
 
-const Tag = ({ text }: { text: string }) => {
+export const Tag = ({ text }: { text: string }) => {
   return (
     <span className="bg-gray-200 text-gray-800 rounded-full py-1 px-2 inline-flex items-center	 text-center">
       {text}
@@ -28,7 +28,7 @@ export const ListingCard = ({
         </CardHeader>
       )}
       {variant === "add" ? (
-        <CardContent className="h-full flex items-center">
+        <CardContent className="h-full flex justify-center items-center">
           <img
             src="https://img.icons8.com/color/240/add--v1.png"
             alt="add--v1"
