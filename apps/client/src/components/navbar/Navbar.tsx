@@ -29,9 +29,9 @@ const Navbar = () => {
             <div className="hidden md:block">
               <div className="ml-10 flex items-baseline space-x-4">
                 <a
-                  href={Routes.MAIN}
+                  href={Routes.LISTINGS}
                   className={`${
-                    isActive(Routes.MAIN)
+                    isActive(Routes.LISTINGS)
                       ? "text-gray-500"
                       : "text-white hover:text-gray-300"
                   } px-3 py-2 rounded-md text-sm font-medium`}
@@ -40,9 +40,9 @@ const Navbar = () => {
                 </a>
                 {auth && (
                   <a
-                    href="#"
+                    href={Routes.MY_LISTINGS}
                     className={`${
-                      isActive("#")
+                      isActive(Routes.MY_LISTINGS)
                         ? "text-gray-500"
                         : "text-white hover:text-gray-300"
                     } px-3 py-2 rounded-md text-sm font-medium`}
@@ -57,7 +57,7 @@ const Navbar = () => {
             <div className="ml-4 flex items-center md:ml-6">
               {auth ? (
                 <a
-                  href={Routes.MAIN}
+                  href={Routes.LISTINGS}
                   onClick={logoutUser}
                   className="text-white hover:text-gray-300 px-3 py-2 rounded-md text-sm font-medium"
                 >
@@ -129,9 +129,9 @@ const Navbar = () => {
       <div className={isOpen ? "block md:hidden" : "hidden"}>
         <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
           <a
-            href={Routes.MAIN}
+            href={Routes.LISTINGS}
             className={`${
-              isActive(Routes.MAIN)
+              isActive(Routes.LISTINGS)
                 ? "text-gray-500"
                 : "text-white hover:text-gray-300"
             } block px-3 py-2 rounded-md text-base font-medium`}
@@ -141,9 +141,9 @@ const Navbar = () => {
           {auth ? (
             <>
               <a
-                href="#"
+                href={Routes.MY_LISTINGS}
                 className={`${
-                  isActive("#")
+                  isActive(Routes.MY_LISTINGS)
                     ? "text-gray-500"
                     : "text-white hover:text-gray-300"
                 } block px-3 py-2 rounded-md text-base font-medium`}
@@ -152,7 +152,7 @@ const Navbar = () => {
               </a>
               <a
                 onClick={logoutUser}
-                href={Routes.MAIN}
+                href={Routes.LISTINGS}
                 className="text-white hover:text-gray-300 block px-3 py-2 rounded-md text-base font-medium"
               >
                 Logout

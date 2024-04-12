@@ -10,6 +10,7 @@ import { Routes } from "../../utils";
 import { signIn } from "../../slices/AuthSlice";
 import { useDispatch } from "react-redux";
 import { useToast } from "client/src/@/components/ui/toast/use-toast";
+import { useNavigate } from "react-router-dom";
 
 interface ISignIn {
   email: string;
@@ -19,6 +20,7 @@ interface ISignIn {
 export const Login = () => {
   const dispatch = useDispatch();
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   return (
     <Formik
@@ -30,9 +32,14 @@ export const Login = () => {
           .then((res) => {
             if (res?.data?.token) {
               dispatch(
-                signIn({ email: res.data.user.email, token: res.data.token })
+                signIn({
+                  email: res.data.user.email,
+                  token: res.data.token,
+                  name: res.data.name,
+                })
               );
               resetForm();
+              navigate(Routes.MY_LISTINGS);
             }
           })
           .catch((e) => {

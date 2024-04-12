@@ -3,7 +3,8 @@ export enum APIRoutes {
 }
 
 export enum Routes {
-  MAIN = "/",
+  LISTINGS = "/",
   LOGIN = "/login",
   SIGN_UP = "/signup",
+  MY_LISTINGS = "/my-listings",
 }
