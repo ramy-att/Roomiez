@@ -14,7 +14,7 @@ export const ListingCard = ({
   variant = "default",
 }: {
   onClick?: any;
-  variant?: "add" | "default";
+  variant?: "add" | "default" | "loading";
   listing?: any;
 }) => {
   return (
@@ -22,17 +22,32 @@ export const ListingCard = ({
       onClick={onClick}
       className={`w-1/4 min-w-[300px] transition-transform duration-300 transform ${variant === "default" ? "hover:scale-105" : ""} hover:cursor-pointer`}
     >
-      {listing?.href && (
+      {listing?.href ? (
         <CardHeader>
           <img className="h-34" src={listing.href} />
         </CardHeader>
-      )}
+      ) : variant === "loading" ? (
+        <CardHeader>
+          <div className="w-full h-60 bg-gray-300 animate-pulse mb-2" />
+        </CardHeader>
+      ) : null}
       {variant === "add" ? (
         <CardContent className="h-full flex justify-center items-center">
           <img
             src="https://img.icons8.com/color/240/add--v1.png"
             alt="add--v1"
           />
+        </CardContent>
+      ) : variant === "loading" ? (
+        <CardContent>
+          <div className="flex flex-col justify-center items-center h-full">
+            <div className="h-4 w-full mb-2 bg-gray-300 animate-pulse" />
+            <div className="flex justify-center w-full flex-wrap flex-row gap-2">
+              <div className="h-6 rounded-full w-1/4 py-1 px-2 inline-flex items-center	 text-center bg-gray-300 animate-pulse" />
+              <div className="h-6 rounded-full w-1/4 py-1 px-2 inline-flex items-center	 text-center bg-gray-300 animate-pulse" />
+              <div className="h-6 rounded-full w-1/4 py-1 px-2 inline-flex items-center	 text-center bg-gray-300 animate-pulse" />
+            </div>
+          </div>
         </CardContent>
       ) : (
         <CardContent>
