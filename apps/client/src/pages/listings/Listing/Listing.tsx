@@ -40,7 +40,7 @@ export const Listing = () => {
     <div className="flex justify-center items-center flex-col w-3/4 mx-auto mt-10 px-6">
       <div className="flex flex-col items-center mb-8">
         <img src={listing.href} alt="Listing Image" className="mb-4 max-h-96	" />
-        <div className="space-y-2">
+        <div className="flex gap-3">
           {listing.tags.map((tag, idx) => (
             <Tag key={idx} text={tag} />
           ))}
