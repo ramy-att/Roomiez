@@ -12,7 +12,7 @@ import { AuthModule } from './auth/auth.module';
   imports: [
     ConfigModule.forRoot(),
     MongooseModule.forRoot(
-      'mongodb+srv://soen363p:UMYabQvM9nJ8XJLQ@cluster0.ihs3dcw.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0',
+      'mongodb+srv://3ezoyasser:CGrFWsdeiYE0Luo9@cluster0.sg1z30d.mongodb.net/',
     ),
     UserModule,
     AuthModule,
