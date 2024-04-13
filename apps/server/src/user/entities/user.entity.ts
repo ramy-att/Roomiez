@@ -3,7 +3,7 @@ import * as bcrypt from 'bcrypt';
 import { isEmail } from 'class-validator';
 
 export interface UserEntity extends Document {
-  _id: string;
+  _id: any;
   email: string;
   password: string;
   name: string;
