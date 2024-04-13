@@ -7,15 +7,17 @@ import { UserController } from './user/user.controller';
 import { AuthController } from './auth/auth.controller';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
+import { ListingModule } from './listing/listing.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
     MongooseModule.forRoot(
-      'mongodb+srv://3ezoyasser:CGrFWsdeiYE0Luo9@cluster0.sg1z30d.mongodb.net/',
+      'mongodb+srv://3ezoyasser:CGrFWsdeiYE0Luo9@cluster0.sg1z30d.mongodb.net/'
     ),
     UserModule,
     AuthModule,
+    ListingModule,
   ],
   controllers: [AppController, UserController, AuthController],
   providers: [AppService],

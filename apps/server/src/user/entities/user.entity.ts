@@ -9,6 +9,10 @@ export interface UserEntity extends Document {
   name: string;
   imageUrl: string;
   imageId: string;
+  prefrences: {pref : string; exist: boolean};
+  phone: number;
+  age: number;
+
 }
 
 interface UserModel extends mongoose.Model<UserEntity> {}
@@ -28,6 +32,10 @@ export const UserSchema = new mongoose.Schema<UserEntity, UserModel>(
     name: { type: String, required: true },
     imageUrl: { type: String, required: true },
     imageId: { type: String, required: true },
+    age : { type: Number },
+    prefrences : {type: Object},
+    phone :{type : Number },
+    
   },
   {
     timestamps: true, // This enables automatic createdAt and updatedAt fields
