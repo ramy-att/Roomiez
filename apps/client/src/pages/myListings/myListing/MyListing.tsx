@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { myListings } from "../../../samples";
-import { useMemo } from "react";
+import React, { useState, useMemo } from 'react';
 import { Form, Formik } from "formik";
 import CustomInput from "../../../components/customInput/CustomInput";
 import { Textarea } from "client/src/@/components/ui/textarea";
@@ -13,21 +13,40 @@ import {
   TableHeader,
   TableRow,
 } from "client/src/@/components/ui/table";
+import { Modal, Input, Button } from 'antd';
+import emailjs from 'emailjs-com';
 
-const handleAccept = (id:number) => {
-  console.log("Accepted", id);
-  // Add your logic here for accept
-};
-const handleReject = (id:number) => {
-  console.log("Rejected", id);
-  // Add your logic here for reject
-};
 export const MyListing = () => {
   const { id } = useParams();
-  const listing = useMemo(
-    () => (id ? myListings[parseInt(id)] : myListings[0]),
-    [id, myListings]
-  );
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [email, setEmail] = useState('');
+  const [action, setAction] = useState('');
+  const [applicantId, setApplicantId] = useState(0);
+
+  const listing = useMemo(() => (id ? myListings[parseInt(id, 10)] : myListings[0]), [id, myListings]);
+
+  const showModal = (actionType, id) => {
+    setAction(actionType);
+    setApplicantId(id);
+    setIsModalVisible(true);
+  };
+
+  const handleEmailSend = () => {
+    const templateId = action === 'accept' ? 'template_uytjhsy' : 'template_r1hupue';
+    emailjs.send('service_6s2f1ks', templateId, { to_email: email, applicant_name: "Applicant's Name Here", listing_location: listing.location }, 'QWMkXgL51rQo4-6sg')
+      .then((response) => {
+        console.log('Email sent successfully', response.text);
+        setIsModalVisible(false);
+        setEmail('');
+      }, (error) => {
+        console.log('Failed to send email', error.text);
+      });
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+    setEmail('');
+  };
 
   return (
     <div className="flex flex-col justify-center items-center">
@@ -94,11 +113,11 @@ export const MyListing = () => {
             <TableCell>1234567890</TableCell>
             <TableCell>Woof Woof!</TableCell>
             <TableCell>
-              <button onClick={() => handleAccept(1)}
+            <button onClick={() => showModal('accept', 1)}
                 className="text-white bg-green-500 hover:bg-green-700 px-3 py-1 rounded transition duration-300">
                 Accept
               </button>
-              <button onClick={() => handleReject(1)}
+              <button onClick={() => showModal('reject', 1)}
                 className="text-white bg-red-500 hover:bg-red-700 ml-2 px-3 py-1 rounded transition duration-300">
                 Reject
               </button>
@@ -107,6 +126,10 @@ export const MyListing = () => {
           {/* Repeat the <TableRow> for other entries */}
         </TableBody>
       </Table>
+      <Modal title={`${action.charAt(0).toUpperCase() + action.slice(1)} Applicant`} visible={isModalVisible} onCancel={handleCancel} onOk={handleEmailSend}>
+        <p>Enter the email address to notify:</p>
+        <Input placeholder="Email address" value={email} onChange={e => setEmail(e.target.value)} />
+      </Modal>
       </div>
     </div>
   );
