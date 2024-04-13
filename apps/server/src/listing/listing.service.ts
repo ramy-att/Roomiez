@@ -112,12 +112,17 @@ export class ListingService {
 
   async getAllApplicants(listingId) {
     const listing = await this.listingModel.findById(listingId);
-    let applicants;
+   
     console.log(listing.applicants[0].toString());
     var x = listing.applicants[0];
-    let g = (await this.userService.userModel.findOne({_id :x.toString()}));
+    const applicantsPromises = listing.applicants.map(x =>
+      this.userService.userModel.findOne({_id: x.toString()})
+    );
 
-    return g;
+    // Resolve all promises to get the full list of applicant details
+    const applicants = await Promise.all(applicantsPromises);
+    console.log(applicants); // Logging the result for checking
+    return applicants;
   }
 }
 
