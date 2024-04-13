@@ -14,6 +14,14 @@ import {
   TableRow,
 } from "client/src/@/components/ui/table";
 
+const handleAccept = (id:number) => {
+  console.log("Accepted", id);
+  // Add your logic here for accept
+};
+const handleReject = (id:number) => {
+  console.log("Rejected", id);
+  // Add your logic here for reject
+};
 export const MyListing = () => {
   const { id } = useParams();
   const listing = useMemo(
@@ -72,21 +80,33 @@ export const MyListing = () => {
           Applications
         </h1>
         <Table className="w-full">
-          <TableHeader>
-            <TableRow>
-              <TableHead className="w-[100px]">Name</TableHead>
-              <TableHead>Phone #</TableHead>
-              <TableHead>Message</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            <TableRow>
-              <TableCell className="font-medium">Bingo</TableCell>
-              <TableCell>1234567890</TableCell>
-              <TableCell>Woof Woof!</TableCell>
-            </TableRow>
-          </TableBody>
-        </Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead className="w-[100px]">Name</TableHead>
+            <TableHead>Phone #</TableHead>
+            <TableHead>Message</TableHead>
+            <TableHead>Actions</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          <TableRow>
+            <TableCell className="font-medium">Bingo</TableCell>
+            <TableCell>1234567890</TableCell>
+            <TableCell>Woof Woof!</TableCell>
+            <TableCell>
+              <button onClick={() => handleAccept(1)}
+                className="text-white bg-green-500 hover:bg-green-700 px-3 py-1 rounded transition duration-300">
+                Accept
+              </button>
+              <button onClick={() => handleReject(1)}
+                className="text-white bg-red-500 hover:bg-red-700 ml-2 px-3 py-1 rounded transition duration-300">
+                Reject
+              </button>
+            </TableCell>
+          </TableRow>
+          {/* Repeat the <TableRow> for other entries */}
+        </TableBody>
+      </Table>
       </div>
     </div>
   );
