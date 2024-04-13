@@ -99,9 +99,7 @@ export const Listing = () => {
           className="mb-4 max-h-96	"
         />
         <div className="flex gap-3">
-          {listing?.availabilities.map((tag, idx) => (
-            <Tag key={idx} text={tag} />
-          ))}
+          {listing?.tags.map((tag, idx) => <Tag key={idx} text={tag} />)}
         </div>
       </div>
       <div className=" mb-8">
