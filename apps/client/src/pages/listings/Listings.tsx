@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { ListingCard } from "../../components/listingCard/ListingCard";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { Tag } from "../../components/tag/Tag";
 
 export const Listings = () => {
   const navigate = useNavigate();
@@ -40,6 +41,7 @@ export const Listings = () => {
         : [...Array(10)].map((_, index) => (
             <ListingCard key={index} variant="loading" />
           ))}
+      <Tag text="hello" />
     </div>
   );
 };
