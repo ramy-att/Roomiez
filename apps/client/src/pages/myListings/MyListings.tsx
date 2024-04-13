@@ -18,7 +18,7 @@ export const MyListings = () => {
     setIsLoading(true);
     if (user) {
       axios
-        .get(`http://localhost:4000/listing/user/${user.id}/owner}`)
+        .get(`http://localhost:4000/listing/user/${user.id}/owner`)
         .then((res) => {
           setMyListings(res.data);
         })
@@ -33,17 +33,17 @@ export const MyListings = () => {
       <h1 className="text-3xl font-bold mb-8">
         View Your Listings here, {user.name}!
       </h1>
-      <div className="gap-10 pb-10 flex flex-col flex-wrap ">
+      <div className="gap-10 pb-10 flex flex-row flex-wrap ">
         {myListings?.length ? (
           myListings.map((listing, idx) => (
             <ListingCard
-              onClick={() => onClickHandler(listing.id)}
+              onClick={() => onClickHandler(listing._id)}
               key={listing.description}
               listing={listing}
             />
           ))
         ) : (
-          <h2 className="text-xl text-center font-bold mb-4">
+          <h2 className="text-xl flex w-full justify-center font-bold mb-4">
             Need a roommate? Create a listing!
           </h2>
         )}

@@ -22,12 +22,12 @@ export const ListingCard = ({
       onClick={onClick}
       className={`w-1/5 min-w-[300px] max-h-[400px] transition-transform duration-300 transform ${variant === "default" ? "hover:scale-105" : ""} hover:cursor-pointer`}
     >
-      {listing?.href ? (
+      {listing?.imageUrl ? (
         <CardHeader>
           <div className="bg-gray-100 border-b-2 border-yellow-500 flex justify-center items-center h-48 relative overflow-hidden">
             <img
               className="block h-48 w-full object-cover"
-              src={listing.href}
+              src={listing.imageUrl}
             />
           </div>
         </CardHeader>

@@ -17,16 +17,19 @@ import axios from "axios";
 export const MyListing = () => {
   const { id } = useParams();
   const [listing, setListing] = useState();
+  const [applicants, setApplicants] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     setIsLoading(true);
     if (id) {
+      axios.get(`http://localhost:4000/listing/${id}`).then((res) => {
+        setListing(res.data);
+      });
       axios
-        .get(`http://localhost:4000/listing/${id}`)
+        .get(`http://localhost:4000/listing/${id}/applicants`)
         .then((res) => {
-          setIsLoading(false);
-          setListing(res.data);
+          setApplicants(res.data);
         })
         .finally(() => {
           setIsLoading(false);
@@ -40,7 +43,7 @@ export const MyListing = () => {
         Listing: {listing?.location}
       </h1>
       <div className="flex justify-center">
-        <img width="50%" src={listing?.href} alt="Listing Image" />
+        <img width="50%" src={listing?.imageUrl} alt="Listing Image" />
       </div>
       {listing && (
         <Formik initialValues={{ ...listing }}>

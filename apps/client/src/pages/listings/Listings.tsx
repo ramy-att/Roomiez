@@ -32,10 +32,7 @@ export const Listings = () => {
             <ListingCard
               onClick={() => onClickHandler(listing._id)}
               key={idx}
-              listing={{
-                ...listing,
-                href: listing.imageUrl,
-              }}
+              listing={listing}
             />
           ))
         : [...Array(10)].map((_, index) => (
