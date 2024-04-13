@@ -7,4 +7,5 @@ export enum Routes {
   LOGIN = "/login",
   SIGN_UP = "/signup",
   MY_LISTINGS = "/my-listings",
+  MY_APPLICATIONS = "/my-applications",
 }

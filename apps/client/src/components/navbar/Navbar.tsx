@@ -39,16 +39,28 @@ const Navbar = () => {
                   Listings
                 </a>
                 {auth && (
-                  <a
-                    href={Routes.MY_LISTINGS}
-                    className={`${
-                      isActive(Routes.MY_LISTINGS)
-                        ? "text-gray-500"
-                        : "text-white hover:text-gray-300"
-                    } px-3 py-2 rounded-md text-sm font-medium`}
-                  >
-                    My Listings
-                  </a>
+                  <>
+                    <a
+                      href={Routes.MY_LISTINGS}
+                      className={`${
+                        isActive(Routes.MY_LISTINGS)
+                          ? "text-gray-500"
+                          : "text-white hover:text-gray-300"
+                      } px-3 py-2 rounded-md text-sm font-medium`}
+                    >
+                      My Listings
+                    </a>
+                    <a
+                      href={Routes.MY_APPLICATIONS}
+                      className={`${
+                        isActive(Routes.MY_APPLICATIONS)
+                          ? "text-gray-500"
+                          : "text-white hover:text-gray-300"
+                      } px-3 py-2 rounded-md text-sm font-medium`}
+                    >
+                      My Applications
+                    </a>
+                  </>
                 )}
               </div>
             </div>
@@ -137,6 +149,16 @@ const Navbar = () => {
             } block px-3 py-2 rounded-md text-base font-medium`}
           >
             Listings
+          </a>
+          <a
+            href={Routes.MY_APPLICATIONS}
+            className={`${
+              isActive(Routes.MY_APPLICATIONS)
+                ? "text-gray-500"
+                : "text-white hover:text-gray-300"
+            } block px-3 py-2 rounded-md text-base font-medium`}
+          >
+            My Applications
           </a>
           {auth ? (
             <>
