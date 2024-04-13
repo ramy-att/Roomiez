@@ -34,7 +34,6 @@ export const Listings = () => {
               listing={{
                 ...listing,
                 href: listing.imageUrl,
-                tags: listing.availabilities,
               }}
             />
           ))

@@ -7,7 +7,7 @@ import axios from "axios";
 export const MyListings = () => {
   const user = useSelector((state) => state.auth);
   const navigate = useNavigate();
-  const [myListings, setMyListings] = useState();
+  const [myListings, setMyListings] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
   const onClickHandler = (id: string) => {

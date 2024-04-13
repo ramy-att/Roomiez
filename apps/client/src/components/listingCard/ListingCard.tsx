@@ -20,15 +20,20 @@ export const ListingCard = ({
   return (
     <Card
       onClick={onClick}
-      className={`w-1/4 min-w-[300px] transition-transform duration-300 transform ${variant === "default" ? "hover:scale-105" : ""} hover:cursor-pointer`}
+      className={`w-1/5 min-w-[300px] max-h-[400px] transition-transform duration-300 transform ${variant === "default" ? "hover:scale-105" : ""} hover:cursor-pointer`}
     >
       {listing?.href ? (
         <CardHeader>
-          <img className="h-34" src={listing.href} />
+          <div className="bg-gray-100 border-b-2 border-yellow-500 flex justify-center items-center h-48 relative overflow-hidden">
+            <img
+              className="block h-48 w-full object-cover"
+              src={listing.href}
+            />
+          </div>
         </CardHeader>
       ) : variant === "loading" ? (
         <CardHeader>
-          <div className="w-full h-60 bg-gray-300 animate-pulse mb-2" />
+          <div className="w-full h-56 bg-gray-300 animate-pulse mb-2" />
         </CardHeader>
       ) : null}
       {variant === "add" ? (
@@ -57,7 +62,7 @@ export const ListingCard = ({
           </div>
           <div className="flex justify-center flex-wrap gap-2">
             <Tag text={`$${listing.price}`} />
-            {listing.tags.map((tag: string) => {
+            {listing?.tags?.map?.((tag: string) => {
               return <Tag text={tag} />;
             })}
           </div>
