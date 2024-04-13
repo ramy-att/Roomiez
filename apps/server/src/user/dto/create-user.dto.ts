@@ -26,4 +26,13 @@ export class CreateUserDto {
   @ApiProperty()
   @IsNotEmpty()
   name: string;
+
+  @ApiProperty()
+  phone: number 
+
+  @ApiProperty()
+  age: number
+
+  @ApiProperty()
+  prefrences : {pref : string; exist: boolean}
 }

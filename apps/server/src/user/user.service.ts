@@ -40,7 +40,7 @@ export class UserService {
     createUserDto: CreateUserDto,
     image?: Express.Multer.File,
   ): Promise<UserEntity> {
-    const { email, password, name } = createUserDto;
+    const { email, password, name, phone , prefrences, age } = createUserDto;
 
     const { imageUrl, imageId } = await this.uploadProfileImage(image);
 
@@ -51,6 +51,9 @@ export class UserService {
       name,
       imageUrl,
       imageId,
+      phone,
+      prefrences,
+      age
     });
 
     const session = await this.userModel.db.startSession();
@@ -109,7 +112,7 @@ export class UserService {
     updateUserDto: UpdateUserDto,
     image?: Express.Multer.File,
   ): Promise<UserEntity> {
-    const { name, email, newPassword } = updateUserDto;
+    const { name, email, newPassword, age, phone, prefrences} = updateUserDto;
 
     // Find the user by id
     const user = await this.userModel.findById(id);
@@ -133,6 +136,9 @@ export class UserService {
         await this.uploadProfileImage(image);
       user.imageUrl = newUrl;
       user.imageId = newId;
+      user.age = age;
+      user.prefrences = prefrences;
+      user.phone  = phone
     }
 
     user.name = name;

@@ -38,7 +38,9 @@ export class UserController {
     @Body() createUserDto: CreateUserDto,
     @UploadedFile() image: Express.Multer.File,
   ): Promise<UserModel> {
+    console.log("yarab")
     return new UserModel(
+      
       await this.userService.createUser(createUserDto, image),
     );
   }
@@ -49,7 +51,7 @@ export class UserController {
    * @returns The profile of the authenticated user.
    */
   @Get('profile')
-  @UseGuards(AuthGuard)
+  
   async getProfile(@Request() req: any): Promise<UserModel> {
     const userEntity = await this.userService.findUserById(req.user.sub);
 
