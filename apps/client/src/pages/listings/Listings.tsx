@@ -41,7 +41,6 @@ export const Listings = () => {
         : [...Array(10)].map((_, index) => (
             <ListingCard key={index} variant="loading" />
           ))}
-      <Tag text="hello" />
     </div>
   );
 };
