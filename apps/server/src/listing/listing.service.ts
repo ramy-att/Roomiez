@@ -23,12 +23,10 @@ export class ListingService {
     public userService: UserService,
   ) {}
   async create(createListingDto: Listing, image) {
-    const ownerId = new Types.ObjectId('6619e64fed609adffcc27533');
     const { imageUrl, imageId } = await this.uploadProfileImage(image);
 
     const listing = new this.listingModel({
       ...createListingDto,
-      owner: ownerId,
       applicants: [],
       imageId: imageId,
       imageUrl: imageUrl,
@@ -94,12 +92,20 @@ export class ListingService {
     return listing;
   }
 
+  async getAll() {
+    return await this.listingModel.find();
+  }
+
+  async getListing(id: string) {
+    return await this.listingModel.findById(id);
+  }
+
   async deleteListing(listingId) {
     const listing = await this.listingModel.findById(listingId);
     if (!listing) {
       throw new NotFoundException('Listing is not found');
     }
-    const id = new Types.ObjectId(listingId)
+    const id = new Types.ObjectId(listingId);
     return this.listingModel.deleteOne(id);
   }
 }
