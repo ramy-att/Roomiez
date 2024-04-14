@@ -25,7 +25,7 @@ export class UserService {
    * @param companyService The Company service.
    */
   constructor(
-    @InjectModel('User') private readonly userModel: Model<UserEntity>,
+    @InjectModel('User') public readonly userModel: Model<UserEntity>,
     private cloudinary: CloudinaryService,
   ) {}
 
@@ -95,9 +95,14 @@ export class UserService {
    * @param id The ID of the user to find.
    * @returns The found user, or undefined if not found.
    */
-  public async findUserById(id: string): Promise<UserEntity | null> {
+  public async findUserById(id): Promise<UserEntity | null> {
+    
     return this.userModel.findOne({ _id: id }).exec();
   }
+
+  // public async findUserByIdtrial(id: string): Promise<UserEntity | null> {
+  //   return this.userModel.findById(id)
+  // }
 
   /**
    * Updates a user's information.

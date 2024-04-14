@@ -33,6 +33,7 @@ export const Login = () => {
             if (res?.data?.token) {
               dispatch(
                 signIn({
+                  id: res.data.user.id,
                   email: res.data.user.email,
                   token: res.data.token,
                   name: res.data.name,

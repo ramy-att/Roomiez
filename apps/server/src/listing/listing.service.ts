@@ -7,28 +7,27 @@ import { CreateListingDto } from './dto/create-listing.dto';
 import { UpdateListingDto } from './dto/update-listing.dto';
 import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 import { Listing } from './entities/listing.entity';
-import { InjectModel } from '@nestjs/mongoose';
+
 import { Model } from 'mongoose';
 import { ChildProcessWithoutNullStreams } from 'child_process';
 import { UserService } from 'src/user/user.service';
 import { Types } from 'mongoose';
 import { types } from 'util';
 import { _isEqual } from 'Lodash';
+import { InjectModel } from '@nestjs/mongoose';
 
 @Injectable()
 export class ListingService {
   constructor(
-    @InjectModel('Listing') private readonly listingModel: Model<Listing>,
+    @InjectModel('Listing') public readonly listingModel: Model<Listing>,
     public cloudinary: CloudinaryService,
     public userService: UserService,
   ) {}
   async create(createListingDto: Listing, image) {
-    const ownerId = new Types.ObjectId('6619e64fed609adffcc27533');
     const { imageUrl, imageId } = await this.uploadProfileImage(image);
-
+    const ownerId = new Types.ObjectId(createListingDto.owner);
     const listing = new this.listingModel({
       ...createListingDto,
-      owner: ownerId,
       applicants: [],
       imageId: imageId,
       imageUrl: imageUrl,
@@ -94,12 +93,36 @@ export class ListingService {
     return listing;
   }
 
+  async getAll() {
+    return await this.listingModel.find();
+  }
+
+  async getListing(id: string) {
+    return await this.listingModel.findById(id);
+  }
+
   async deleteListing(listingId) {
     const listing = await this.listingModel.findById(listingId);
     if (!listing) {
       throw new NotFoundException('Listing is not found');
     }
-    const id = new Types.ObjectId(listingId)
+    const id = new Types.ObjectId(listingId);
     return this.listingModel.deleteOne(id);
+  }
+
+  async getAllApplicants(listingId) {
+    const listing = await this.listingModel.findById(listingId);
+
+    listing.applicants = listing.applicants.filter(x=>x!=null)
+  
+      const applicantsPromises = listing.applicants.map((x) =>
+        this.userService.userModel.findOne({ _id: x?.toString() }),
+      );
+
+      // Resolve all promises to get the full list of applicant details
+      const applicants = await Promise.all(applicantsPromises);
+      return applicants;
+   
+    return [];
   }
 }

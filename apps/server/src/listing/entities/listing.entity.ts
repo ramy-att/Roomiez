@@ -10,7 +10,7 @@ export class Listing {
     description: string;
   
     @Prop({ type: [String]})
-    availabilities: string[];
+    tags: string[];
   
     @Prop({ type: Types.ObjectId, ref: 'User' })
     owner: Types.ObjectId;
@@ -25,6 +25,12 @@ export class Listing {
     imageUrl: string
     @Prop()
     imageId : string
+
+    @Prop()
+    price: number 
+
+    @Prop()
+    location: string 
 }
 
 export const CatSchema = SchemaFactory.createForClass(Listing);
