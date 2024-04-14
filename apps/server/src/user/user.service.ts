@@ -10,6 +10,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
 import { MongoServerError } from 'mongodb';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 /**
@@ -40,7 +41,24 @@ export class UserService {
     createUserDto: CreateUserDto,
     image?: Express.Multer.File,
   ): Promise<UserEntity> {
-    const { email, password, name, phone , prefrences, age } = createUserDto;
+    const {
+      email,
+      password,
+      name,
+      phone,
+      description,
+      Drinking,
+      Smoking,
+      PetFriendly,
+      Gym,
+      Walking,
+      Football,
+      Reading,
+      Cooking,
+      Gaming,
+      Nature,
+      age,
+    } = createUserDto;
 
     const { imageUrl, imageId } = await this.uploadProfileImage(image);
 
@@ -52,8 +70,18 @@ export class UserService {
       imageUrl,
       imageId,
       phone,
-      prefrences,
-      age
+      description,
+      Drinking,
+      Smoking,
+      PetFriendly,
+      Gym,
+      Walking,
+      Football,
+      Reading,
+      Cooking,
+      Gaming,
+      Nature,
+      age,
     });
 
     const session = await this.userModel.db.startSession();
@@ -96,7 +124,6 @@ export class UserService {
    * @returns The found user, or undefined if not found.
    */
   public async findUserById(id): Promise<UserEntity | null> {
-    
     return this.userModel.findOne({ _id: id }).exec();
   }
 
@@ -117,7 +144,24 @@ export class UserService {
     updateUserDto: UpdateUserDto,
     image?: Express.Multer.File,
   ): Promise<UserEntity> {
-    const { name, email, newPassword, age, phone, prefrences} = updateUserDto;
+    const {
+      name,
+      email,
+      newPassword,
+      age,
+      phone,
+      description,
+      Drinking,
+      Smoking,
+      PetFriendly,
+      Gym,
+      Walking,
+      Football,
+      Reading,
+      Cooking,
+      Gaming,
+      Nature,
+    } = updateUserDto;
 
     // Find the user by id
     const user = await this.userModel.findById(id);
@@ -133,18 +177,28 @@ export class UserService {
     }
 
     if (newPassword) {
-      user.password = newPassword;
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash(newPassword, salt);
+      user.password = hashedPassword;
     }
 
-    if (image) {
-      const { imageUrl: newUrl, imageId: newId } =
-        await this.uploadProfileImage(image);
-      user.imageUrl = newUrl;
-      user.imageId = newId;
-      user.age = age;
-      user.prefrences = prefrences;
-      user.phone  = phone
-    }
+    const { imageUrl: newUrl, imageId: newId } =
+      await this.uploadProfileImage(image);
+    user.imageUrl = newUrl;
+    user.imageId = newId;
+    user.age = age;
+    user.Drinking = Drinking;
+    user.Smoking = Smoking;
+    user.PetFriendly = PetFriendly;
+    user.Gym = Gym;
+    user.Walking = Walking;
+    user.Football = Football;
+    user.Reading = Reading;
+    user.Cooking = Cooking;
+    user.Gaming = Gaming;
+    user.Nature = Nature;
+    user.phone = phone;
+    user.description = description;
 
     user.name = name;
     user.email = email;

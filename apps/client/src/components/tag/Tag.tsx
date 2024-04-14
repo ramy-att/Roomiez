@@ -6,12 +6,14 @@ export const Tag = ({
   text,
   onClick,
   value,
+  state,
 }: {
   text: string;
-  value: string;
-  onClick: (value?: string) => void;
+  value?: string;
+  state?:boolean;
+  onClick: (state: boolean, value?: string) => void;
 }) => {
-  const [clicked, setClicked] = useState(false);
+  const [clicked, setClicked] = useState(state??false);
 
   return (
     <span
@@ -21,8 +23,8 @@ export const Tag = ({
           : "bg-gray-200 text-gray-700 cursor-pointer transition duration-300 ease-in-out"
       } hover:bg-opacity-75`}
       onClick={() => {
+        onClick?.(!clicked, value);
         setClicked((prev) => !prev);
-        onClick?.(value);
       }}
     >
       {text}
