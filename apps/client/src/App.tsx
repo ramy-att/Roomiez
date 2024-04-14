@@ -10,6 +10,10 @@ import { MyListings } from "./pages/myListings/MyListings";
 import { MyListing } from "./pages/myListings/myListing/MyListing";
 import { Listing } from "./pages/listings/Listing/Listing";
 import { AppliedTo } from "./pages/appliedTo/AppliedTo";
+import { EditProfile } from "./pages/profile/EditProfile";
+
+
+
 
 function App() {
   return (
@@ -24,6 +28,7 @@ function App() {
         <Route path={Routes.MY_LISTINGS} element={<MyListings />} />
         <Route path={`${Routes.MY_LISTINGS}/:id`} element={<MyListing />} />
         <Route path={`${Routes.MY_APPLICATIONS}`} element={<AppliedTo />} />
+        <Route path={`/test/:id`} element={<EditProfile />} />
       </ReactRoutes>
     </>
   );

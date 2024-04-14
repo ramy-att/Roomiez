@@ -25,13 +25,36 @@ export class UpdateUserDto {
   @IsNotEmpty()
   @ApiProperty()
   name: string;
-  
+
+  @IsNotEmpty()
   @ApiProperty()
-  phone: number 
+  phone: string;
 
   @ApiProperty()
-  age: number
+  @IsNotEmpty()
+  description: string;
 
   @ApiProperty()
-  prefrences : {pref : string; exist: boolean}
+  age: number;
+
+  @ApiProperty()
+  Drinking: boolean;
+  @ApiProperty()
+  Smoking: boolean;
+  @ApiProperty()
+  PetFriendly: boolean;
+  @ApiProperty()
+  Gym: boolean;
+  @ApiProperty()
+  Walking: boolean;
+  @ApiProperty()
+  Football: boolean;
+  @ApiProperty()
+  Reading: boolean;
+  @ApiProperty()
+  Cooking: boolean;
+  @ApiProperty()
+  Gaming: boolean;
+  @ApiProperty()
+  Nature: boolean;
 }
