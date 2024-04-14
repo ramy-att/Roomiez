@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  ConflictException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -68,11 +69,13 @@ export class ListingService {
   }
 
   async applyToListing(listingId: string, userId): Promise<Listing> {
-    console.log('sjbkdjsb');
-    // const id = new Types.ObjectId(listingId)
+    
     const listing = await this.listingModel.findById(listingId).exec();
     if (!listing) {
       throw new NotFoundException('Listing not found');
+    }
+    if(userId.localeCompare(listing.owner.toString())==1){
+      throw new ConflictException("owner applying for his appartment")
     }
 
     // Check if the user has already applied
@@ -124,5 +127,16 @@ export class ListingService {
       return applicants;
    
     return [];
+  }
+
+  async deleteApplicant(listingId: string, applicantId ){
+    const listing = await this.listingModel.findById(listingId);
+    if(!listing.applicants.includes(applicantId)){
+     throw new NotFoundException("applicant is not found")
+    }
+    console.log(listing)
+    listing.applicants = listing.applicants.filter(x=>x?.toString()?.localeCompare(applicantId))
+    return listing.save()
+    
   }
 }

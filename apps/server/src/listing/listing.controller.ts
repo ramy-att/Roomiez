@@ -78,4 +78,9 @@ export class ListingController {
     return this.listingService.getAllApplicants(listingId)
   }
 
+  @Delete('/:listingId/applicant/:applicantId')
+  deleteApplicant(@Param('listingId') listingId, @Param('applicantId') applicantId ){
+   return this.listingService.deleteApplicant(listingId,applicantId)
+  }
+
 }
