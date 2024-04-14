@@ -1,35 +1,57 @@
-import React, { useState } from 'react';  // Import useState
+import React, { useState, useEffect } from 'react';  // Import useState
 import { useSelector } from "react-redux";
 import { ListingCard } from "../../components/listingCard/ListingCard";
-import { myListings } from "../../samples";
 import { useNavigate } from "react-router-dom";
 import CreateListingModal from './create-listings'; // Make sure to import CreateListingModal
+import axios from "axios";
 
 export const MyListings = () => {
-  const username = useSelector((state) => state.auth.name);
+  const user = useSelector((state) => state.auth);
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);  // State to control modal visibility
+  const [myListings, setMyListings] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const onClickHandler = (idx: number) => {
-    navigate(`${idx}`);
+  const onClickHandler = (id: string) => {
+    navigate(`${id}`);
   };
 
   const openModal = () => setIsModalOpen(true);  // Function to open the modal
   const closeModal = () => setIsModalOpen(false);  // Function to close the modal
+  useEffect(() => {
+    setIsLoading(true);
+    if (user) {
+      axios
+        .get(`http://localhost:4000/listing/user/${user.id}/owner`)
+        .then((res) => {
+          setMyListings(res.data);
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
+    }
+  }, [user]);
 
   return (
-    <div className="pt-10 pb-10 pl-20">
+    <div className="flex flex-col pt-10 pb-10 pl-20">
       <h1 className="text-3xl font-bold mb-8">
-        View Your Listings here, {username}!
+        View Your Listings here, {user.name}!
       </h1>
-      <div className="gap-10 pb-10 flex flex-wrap ">
-        {myListings.map((listing, idx) => (
-          <ListingCard
-            onClick={() => onClickHandler(idx)}
-            key={listing.description}
-            listing={listing}
-          />
-        ))}
+      <div className="gap-10 pb-10 flex flex-row flex-wrap ">
+        {myListings?.length ? (
+          myListings.map((listing, idx) => (
+            <ListingCard
+              onClick={() => onClickHandler(listing._id)}
+              key={listing.description}
+              listing={listing}
+            />
+          ))
+        ) : (
+          <h2 className="text-xl flex w-full justify-center font-bold mb-4">
+            Need a roommate? Create a listing!
+          </h2>
+        )}
+        {isLoading && <ListingCard variant="loading" />}
         <ListingCard
           onClick={openModal}  // Set this to open the modal
           variant="add"

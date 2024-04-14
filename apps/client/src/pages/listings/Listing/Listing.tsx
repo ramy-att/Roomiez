@@ -1,6 +1,6 @@
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { listings } from "../../../samples";
-import { useMemo, useState } from "react";
+import axios from "axios";
 import {
   Table,
   TableBody,
@@ -19,13 +19,25 @@ export const Listing = () => {
   const auth = !!useSelector((state) => state.auth.token);
   const [message, setMessage] = useState("");
   const { id } = useParams();
+  const [listing, setListing] = useState();
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  const listing = useMemo(
-    () => (id ? listings[parseInt(id)] : listings[0]),
-    [id, listings]
-  );
+  useEffect(() => {
+    setIsLoading(true);
+    if (id) {
+      axios
+        .get(`http://localhost:4000/listing/${id}`)
+        .then((res) => {
+          setIsLoading(false);
+          setListing(res.data);
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
+    }
+  }, [id]);
 
   const handleSubmission = () => {
     setMessage("");
@@ -36,29 +48,73 @@ export const Listing = () => {
     navigate(Routes.LISTINGS);
   };
 
+  // Render placeholders while loading
+  if (isLoading) {
+    return (
+      <div className="flex flex-col items-center mt-10 h-screen">
+        <div className="bg-gray-300 h-96 w-3/4" />
+        <div className="w-3/4">
+          <div className="animate-pulse flex flex-col items-center">
+            <div className="flex mt-2 mb-8 justify-center w-3/4 gap-3">
+              <div className="h-6 rounded-full w-1/4 py-1 px-2 inline-flex items-center	 text-center bg-gray-300 animate-pulse" />
+              <div className="h-6 rounded-full w-1/4 py-1 px-2 inline-flex items-center	 text-center bg-gray-300 animate-pulse" />
+              <div className="h-6 rounded-full w-1/4 py-1 px-2 inline-flex items-center	 text-center bg-gray-300 animate-pulse" />
+            </div>
+            <div className="bg-gray-300 h-4 w-full mb-2" />
+            <div className="bg-gray-300 h-4 w-full mb-2" />
+            <div className="bg-gray-300 h-4 w-full mb-2" />
+            <div className="bg-gray-300 h-4 w-full mb-2" />
+            <div className="bg-gray-300 h-4 w-full mb-2" />
+            <div className="bg-gray-300 h-4 w-full mb-2" />
+          </div>
+        </div>
+        <div className="flex justify-center  ">
+          <div className="w-3/4 mx-auto mt-10 ">
+            <div className="animate-pulse">
+              <div className="flex flex-row items-center gap-20 mb-4">
+                <div>
+                  <div className="bg-gray-200 h-8 w-40 mb-2"></div>
+                  <div className="bg-gray-200 h-4 w-60 mb-2"></div>
+                  <div className="bg-gray-200 h-4 w-96 mb-2"></div>
+                  <div className="bg-gray-200 h-4 w-80"></div>
+                </div>
+                <div>
+                  <div className="bg-gray-200 h-12 w-24"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Render actual listing details
   return (
     <div className="flex justify-center items-center flex-col w-3/4 mx-auto mt-10 px-6">
       <div className="flex flex-col items-center mb-8">
-        <img src={listing.href} alt="Listing Image" className="mb-4 max-h-96	" />
+        <img
+          src={listing?.imageUrl}
+          alt="Listing Image"
+          className="mb-4 max-h-96	"
+        />
         <div className="flex gap-3">
-          {listing.tags.map((tag, idx) => (
-            <Tag key={idx} text={tag} />
-          ))}
+          {listing?.tags.map((tag, idx) => <Tag key={idx} text={tag} />)}
         </div>
       </div>
       <div className=" mb-8">
         <h1 className="text-2xl text-center font-bold mb-4">Description</h1>
-        <p>{listing.description}</p>
+        <p>{listing?.description}</p>
       </div>
       <Table className="w-full bg-gray-100 mb-10">
         <TableBody>
           <TableRow>
             <TableCell className="px-4 font-medium">Location</TableCell>
-            <TableCell className="px-4">{listing.location}</TableCell>
+            <TableCell className="px-4">{listing?.location}</TableCell>
           </TableRow>
           <TableRow>
             <TableCell className="px-4 font-medium">Price</TableCell>
-            <TableCell className="px-4">{listing.price}</TableCell>
+            <TableCell className="px-4">{listing?.price}</TableCell>
           </TableRow>
         </TableBody>
       </Table>
