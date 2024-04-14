@@ -1,96 +1,148 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormGroup from '@mui/material/FormGroup';
+import Checkbox from '@mui/material/Checkbox';
+import Stack from '@mui/material/Stack';
+import Paper from '@mui/material/Paper';
+import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
+import { styled } from '@mui/material/styles';
 
-interface CreateListingModalProps {
-  open: boolean;
-  onClose: () => void;
-}
+const InputFile = styled('input')({
+  display: 'none',
+});
 
-const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 'auto',
-  bgcolor: 'background.paper',
-  boxShadow: 24,
-  p: 4,
-};
-
-const CreateListingModal: React.FC<CreateListingModalProps> = ({ open, onClose }) => {
+const CreateListingModal = ({ open, onClose }) => {
   const [formData, setFormData] = useState({
     description: '',
     location: '',
     price: '',
-    tags: []
+    tags: [],
+    file: null
   });
-  const [customTag, setCustomTag] = useState('');
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
+  const handleCheckboxChange = (event) => {
+    const { name, checked } = event.target;
     setFormData(prevState => ({
       ...prevState,
-      [name]: value
+      tags: checked
+        ? [...prevState.tags, name]
+        : prevState.tags.filter(tag => tag !== name)
     }));
   };
 
-  const handleTagChange = (e: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
-    const { value } = e.target;
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
     setFormData(prevState => ({
       ...prevState,
-      tags: checked ? [...prevState.tags, value] : prevState.tags.filter(tag => tag !== value)
+      file: file
     }));
   };
 
-  const handleCustomTagChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCustomTag(e.target.value);
-  };
-
-  const addCustomTag = () => {
-    if (customTag && !formData.tags.includes(customTag)) {
-      setFormData(prevState => ({
-        ...prevState,
-        tags: [...prevState.tags, customTag]
-      }));
-      setCustomTag('');  // Clear the input after adding
-    }
-  };
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    addCustomTag();  // Ensure custom tag is added if user presses enter on the form submit
     console.log(formData);
-    onClose();
+    onClose(); // Close modal after submission
   };
+
+  const predefinedTags = [
+    "Furnished",
+    "Utilities Included",
+    "Near Public Transport",
+    "Pet-Friendly",
+    "Non-Smoking"
+  ];
 
   return (
     <Modal open={open} onClose={onClose}>
-      <Box sx={style}>
-        <Typography id="modal-title" variant="h6">Create Listing</Typography>
+      <Box sx={{
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: 800, // Set the width to your preference
+        maxWidth: '90%', // Use a percentage to ensure it's responsive
+        bgcolor: 'background.paper',
+        boxShadow: 24,
+        p: 4,
+        pt: 2,
+        pb: 2, // Control the padding to affect the height
+      }}>
+        <Typography variant="h6" component="h2" sx={{ mb: 2 }}>
+          Create Listing
+        </Typography>
         <form onSubmit={handleSubmit}>
-          <TextField name="description" label="Description" fullWidth margin="normal" value={formData.description} onChange={handleChange} />
-          <TextField name="location" label="Location" fullWidth margin="normal" value={formData.location} onChange={handleChange} />
-          <TextField name="price" label="Price" type="number" fullWidth margin="normal" value={formData.price} onChange={handleChange} />
+          <TextField
+            name="description"
+            label="Description"
+            fullWidth
+            value={formData.description}
+            onChange={(e) => handleChange(e)}
+            sx={{ mb: 2 }}
+          />
+          <TextField
+            name="location"
+            label="Location"
+            fullWidth
+            value={formData.location}
+            onChange={(e) => handleChange(e)}
+            sx={{ mb: 2 }}
+          />
+          <TextField
+            name="price"
+            label="Price"
+            type="number"
+            fullWidth
+            value={formData.price}
+            onChange={(e) => handleChange(e)}
+            sx={{ mb: 2 }}
+          />
           <FormGroup>
-            {formData.tags.map(tag => (
-              <FormControlLabel key={tag} control={<Checkbox checked={true} onChange={(e, checked) => handleTagChange(e, !checked)} value={tag} />} label={tag} />
+            {predefinedTags.map((tag) => (
+              <FormControlLabel
+                control={<Checkbox checked={formData.tags.includes(tag)} onChange={handleCheckboxChange} name={tag} />}
+                label={tag}
+                key={tag}
+                sx={{ mb: 1 }}
+              />
             ))}
           </FormGroup>
-          <TextField name="customTag" label="Add Custom Tag" fullWidth margin="normal" value={customTag} onChange={handleCustomTagChange} />
-          <Button onClick={addCustomTag} variant="contained" color="primary">Add Tag</Button>
-          <Button type="submit" variant="contained" color="primary">Submit</Button>
-          <Button onClick={onClose} variant="contained" color="secondary">Cancel</Button>
+          <Stack direction="column" spacing={2} alignItems="start">
+            <label htmlFor="contained-button-file">
+              <InputFile
+                accept="image/*"
+                id="contained-button-file"
+                multiple
+                type="file"
+                onChange={handleFileChange}
+              />
+              <Button variant="contained" component="span">
+                Upload File
+              </Button>
+            </label>
+            {formData.file && (
+              <Paper variant="outlined" sx={{ mt: 2, p: 1, display: 'flex', alignItems: 'center' }}>
+                <InsertDriveFileIcon sx={{ mr: 1 }} />
+                <Typography variant="subtitle1">{formData.file.name}</Typography>
+              </Paper>
+            )}
+          </Stack>
+          <Stack direction="row" spacing={2} justifyContent="flex-end" sx={{ mt: 2 }}>
+            <Button type="submit" variant="contained" color="primary">
+              Submit
+            </Button>
+            <Button onClick={onClose} variant="contained" color="secondary">
+              Cancel
+            </Button>
+          </Stack>
         </form>
       </Box>
     </Modal>
   );
-};
+  };
 
 export default CreateListingModal;
