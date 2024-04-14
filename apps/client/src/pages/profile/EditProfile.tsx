@@ -69,33 +69,33 @@ export const EditProfile = () => {
     }
   }, [id, toast]);
 
-  if (!profile) {
-    return <div>No profile data</div>; // Handle case where no profile data is available
-  }
-
+  // if (!profile) {
+  //   return <div>No profile data</div>; // Handle case where no profile data is available
+  // }
   return (
     <Formik
       initialValues={
         {
-          name: profile.name ?? "",
-          email: profile.email ?? "",
+          name: profile?.name ?? "",
+          email: profile?.email ?? "",
           newPassword: "",
-          phone: profile.phone ?? "",
-          age: profile.age ?? "",
-          description: profile.description ?? "",
-          Drinking: profile.Drinking ?? false,
-          Smoking: profile.Smoking ?? false,
-          PetFriendly: profile.PetFriendly ?? false,
-          Gym: profile.Gym ?? false,
-          Walking: profile.Walking ?? false,
-          Football: profile.Football ?? false,
-          Reading: profile.Reading ?? false,
-          Cooking: profile.Cooking ?? false,
-          Gaming: profile.Gaming ?? false,
-          Nature: profile.Nature ?? false,
+          phone: profile?.phone ?? "",
+          age: profile?.age ?? "",
+          description: profile?.description ?? "",
+          Drinking: profile?.Drinking ?? false,
+          Smoking: profile?.Smoking ?? false,
+          PetFriendly: profile?.PetFriendly ?? false,
+          Gym: profile?.Gym ?? false,
+          Walking: profile?.Walking ?? false,
+          Football: profile?.Football ?? false,
+          Reading: profile?.Reading ?? false,
+          Cooking: profile?.Cooking ?? false,
+          Gaming: profile?.Gaming ?? false,
+          Nature: profile?.Nature ?? false,
         } as Profile
       }
       validationSchema={profileSchema}
+      enableReinitialize={true}
       onSubmit={(values, { setSubmitting }) => {
         axios
           .patch(`http://localhost:4000/user/${id}`, { ...values })
@@ -122,7 +122,7 @@ export const EditProfile = () => {
           <Form className="p-10 rounded-2xl	bg-gray-300 md:w-2/4 w-3/4">
             <div className="flex justify-center">
               <img
-                src={profile.imageUrl}
+                src={profile?.imageUrl}
                 alt="Image"
                 className="h-36 w-36 cursor-pointer transition-opacity duration-300 ease-in-out hover:opacity-50"
                 onClick={() => {
@@ -142,7 +142,7 @@ export const EditProfile = () => {
                 name="name"
                 label="Name"
                 type="name"
-                placeholder={profile.name}
+                placeholder="John Doe"
               />
               <FormError name="name" />
             </div>
@@ -152,7 +152,7 @@ export const EditProfile = () => {
                   name="email"
                   label="Email"
                   type="email"
-                  placeholder={profile.email}
+                  placeholder="email@email.com"
                 />
                 <FormError name="email" />
               </div>
@@ -172,7 +172,7 @@ export const EditProfile = () => {
                   name="age"
                   label="Age"
                   type="number"
-                  placeholder={profile.age}
+                  placeholder="18"
                 />
                 <FormError name="age" />
               </div>
@@ -181,7 +181,7 @@ export const EditProfile = () => {
                   name="phone"
                   label="Phone Number"
                   type="number"
-                  placeholder={profile.phone}
+                  placeholder="1234567890"
                 />
                 <FormError name="phone" />
               </div>
@@ -190,7 +190,7 @@ export const EditProfile = () => {
               <CustomInput
                 name="description"
                 label="Description"
-                placeholder={profile.description}
+                placeholder="I am batman"
               />
               <FormError name="description" />
             </div>
@@ -213,7 +213,7 @@ export const EditProfile = () => {
                 {isSubmitting && (
                   <img className="animate-spin w-4" src={spinner} />
                 )}
-                {isSubmitting ? "Logging In..." : "Submit"}
+                {isSubmitting ? "Updatting..." : "Submit"}
               </Button>
             </div>
           </Form>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import checkmark from "../../assets/checkmark.svg";
 import close from "../../assets/close.svg";
 
@@ -10,10 +10,14 @@ export const Tag = ({
 }: {
   text: string;
   value?: string;
-  state?:boolean;
+  state?: boolean;
   onClick: (state: boolean, value?: string) => void;
 }) => {
-  const [clicked, setClicked] = useState(state??false);
+  const [clicked, setClicked] = useState(state ?? false);
+
+  useEffect(() => {
+    setClicked(state ?? false);
+  }, [state]);
 
   return (
     <span
