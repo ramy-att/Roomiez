@@ -18,13 +18,43 @@ export class UserModel {
   imageId: string;
 
   @ApiProperty()
-  phone: number 
+  phone: string;
 
   @ApiProperty()
-  age: number
+  age: number;
 
   @ApiProperty()
-  prefrences : {pref : string; exist: boolean}
+  description: string;
+
+  @ApiProperty()
+  Drinking: boolean;
+
+  @ApiProperty()
+  Smoking: boolean;
+
+  @ApiProperty()
+  PetFriendly: boolean;
+
+  @ApiProperty()
+  Gym: boolean;
+
+  @ApiProperty()
+  Walking: boolean;
+
+  @ApiProperty()
+  Football: boolean;
+
+  @ApiProperty()
+  Reading: boolean;
+
+  @ApiProperty()
+  Cooking: boolean;
+
+  @ApiProperty()
+  Gaming: boolean;
+
+  @ApiProperty()
+  Nature: boolean;
 
   constructor(entity: UserEntity) {
     this.id = entity._id;
@@ -33,8 +63,18 @@ export class UserModel {
     this.imageUrl = entity.imageUrl;
     this.imageId = entity.imageId;
     this.phone = entity.phone;
-    this.prefrences = entity.prefrences
-    this.age = entity.age
-    
+    this.Drinking = entity.Drinking;
+    this.Smoking = entity.Smoking;
+    this.PetFriendly = entity.PetFriendly;
+    this.Gym = entity.Gym;
+    this.Walking = entity.Walking;
+    this.Football = entity.Football;
+    this.Reading = entity.Reading;
+    this.Cooking = entity.Cooking;
+    this.Gaming = entity.Gaming;
+    this.Nature = entity.Nature;
+    this.phone = entity.phone;
+    this.age = entity.age;
+    this.description=entity.description
   }
 }

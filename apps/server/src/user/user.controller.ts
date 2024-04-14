@@ -38,9 +38,8 @@ export class UserController {
     @Body() createUserDto: CreateUserDto,
     @UploadedFile() image: Express.Multer.File,
   ): Promise<UserModel> {
-    console.log("yarab")
+    console.log('yarab');
     return new UserModel(
-      
       await this.userService.createUser(createUserDto, image),
     );
   }
@@ -51,13 +50,26 @@ export class UserController {
    * @returns The profile of the authenticated user.
    */
   @Get('profile')
-  
   async getProfile(@Request() req: any): Promise<UserModel> {
     const userEntity = await this.userService.findUserById(req.user.sub);
 
     if (!userEntity) throw new NotFoundException('User not found');
 
     return new UserModel(userEntity);
+  }
+
+  /**
+   * Get the profile of the authenticated user.
+   * @param req - The request object.
+   * @returns The profile of the authenticated user.
+   */
+  @Get(':id')
+  async getProfileA7a(@Param('id') req: any) {
+    const userEntity = await this.userService.findUserById(req);
+
+    if (!userEntity) throw new NotFoundException('User not foundhvyv');
+
+    return userEntity;
   }
 
   /**
