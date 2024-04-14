@@ -152,7 +152,7 @@ export const MyListing = () => {
           {/* Repeat the <TableRow> for other entries */}
         </TableBody>
       </Table>
-      <Modal title={`${action.charAt(0).toUpperCase() + action.slice(1)} Applicant`} visible={isModalVisible} onCancel={handleCancel} onOk={handleEmailSend()}>
+      <Modal title={`${action.charAt(0).toUpperCase() + action.slice(1)} Applicant`} visible={isModalVisible} onCancel={handleCancel} onOk={handleEmailSend}>
         <p>Enter the email address to notify:</p>
         <Input placeholder="Email address" value={email} onChange={e => setEmail(e.target.value)} />
       </Modal>
