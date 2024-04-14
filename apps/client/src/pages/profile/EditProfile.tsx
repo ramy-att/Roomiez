@@ -118,7 +118,7 @@ export const EditProfile = () => {
       }}
     >
       {({ handleSubmit, isSubmitting, values, setFieldValue }) => (
-        <div className="w-full h-screen flex justify-center items-center">
+        <div className="w-full mt-10 flex justify-center items-center">
           <Form className="p-10 rounded-2xl	bg-gray-300 md:w-2/4 w-3/4">
             <div className="flex justify-center">
               <img
