@@ -44,13 +44,14 @@ export class ListingController {
   findAllListingsUserAppliedTo(@Param('userId') userId: string) {
     return this.listingService.findAllListingsUserAppliedTo(userId);
   }
-
-  @Put(':listingId/apply')
+ 
+  @Put(':listingId/user/:userId/apply')
   @HttpCode(204) // No Content status code if successful
   async applyToListing(
     @Param('listingId') listingId: string,
-    @Body('userId') userId: string,
+    @Param('userId') userId: string,
   ) {
+     console.log("a78a")
     return this.listingService.applyToListing(listingId, userId);
   }
 
@@ -59,13 +60,13 @@ export class ListingController {
     return this.listingService.findAllListingsOfOwner(userId);
   }
 
-  @Put(':listingId/match')
+  @Put(':listingId/user/:userId/match')
   @HttpCode(204) // No Content status code if successful
   async matchListing(
     @Param('listingId') listingId: string,
-    @Body('userId') userId: string,
+    @Param('userId') userId: string,
   ) {
-    return this.listingService.MatchedRoom(listingId);
+    return this.listingService.MatchedRoom(listingId,userId);
   }
 
   @Delete(':listingId')
@@ -77,4 +78,10 @@ export class ListingController {
   getAllAplicants(@Param('listingId') listingId: string) {
     return this.listingService.getAllApplicants(listingId);
   }
+
+  @Delete('/:listingId/applicant/:applicantId')
+  deleteApplicant(@Param('listingId') listingId, @Param('applicantId') applicantId ){
+   return this.listingService.deleteApplicant(listingId,applicantId)
+  }
+
 }

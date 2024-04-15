@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  ConflictException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -44,12 +45,12 @@ export class ListingService {
     });
     return filtered_listing;
   }
-
+ 
   async findAllListingsOfOwner(userID) {
-    const listings = await this.listingModel.find().exec();
-    const filtered = listings.filter((x) => {
-      JSON.stringify(x.owner).localeCompare(userID);
-    });
+    const listigs = await this.listingModel.find().exec();
+    const filtered = listigs.filter((x) =>
+      JSON.stringify(x.owner).localeCompare(userID),
+    );
     return filtered;
   }
 
@@ -68,11 +69,14 @@ export class ListingService {
   }
 
   async applyToListing(listingId: string, userId): Promise<Listing> {
-    console.log('sjbkdjsb');
-    // const id = new Types.ObjectId(listingId)
+    
     const listing = await this.listingModel.findById(listingId).exec();
     if (!listing) {
       throw new NotFoundException('Listing not found');
+    }
+    
+    if(userId.localeCompare(listing.owner.toString())==1){
+      throw new ConflictException("owner applying for his appartment")
     }
 
     // Check if the user has already applied
@@ -86,9 +90,10 @@ export class ListingService {
     return listing;
   }
 
-  async MatchedRoom(listingId: string) {
+  async MatchedRoom(listingId: string, userID) {
     let listing = await this.listingModel.findById(listingId);
     listing.status = 'matched';
+    listing.applicants = listing.applicants.filter(x=>x?.toString()?.localeCompare(userID))
     await listing.save();
     return listing;
   }
@@ -113,16 +118,27 @@ export class ListingService {
   async getAllApplicants(listingId) {
     const listing = await this.listingModel.findById(listingId);
 
-    const x = listing.applicants[0];
-    if (x) {
+    listing.applicants = listing.applicants.filter(x=>x!=null)
+  
       const applicantsPromises = listing.applicants.map((x) =>
-        this.userService.userModel.findOne({ _id: x.toString() }),
+        this.userService.userModel.findOne({ _id: x?.toString() }),
       );
 
       // Resolve all promises to get the full list of applicant details
       const applicants = await Promise.all(applicantsPromises);
       return applicants;
-    }
+   
     return [];
+  }
+
+  async deleteApplicant(listingId: string, applicantId ){
+    const listing = await this.listingModel.findById(listingId);
+    if(!listing.applicants.includes(applicantId)){
+     throw new NotFoundException("applicant is not found")
+    }
+    console.log(listing)
+    listing.applicants = listing.applicants.filter(x=>x?.toString()?.localeCompare(applicantId))
+    return listing.save()
+    
   }
 }

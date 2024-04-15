@@ -3,7 +3,7 @@ import { ListingCard } from "../../components/listingCard/ListingCard";
 import { useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-
+import { myListings } from "../../samples";
 export const MyListings = () => {
   const user = useSelector((state) => state.auth);
   const navigate = useNavigate();
@@ -13,7 +13,7 @@ export const MyListings = () => {
   const onClickHandler = (id: string) => {
     navigate(`${id}`);
   };
-
+ 
   useEffect(() => {
     setIsLoading(true);
     if (user) {
