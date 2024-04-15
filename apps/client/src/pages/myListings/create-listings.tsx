@@ -1,7 +1,7 @@
 import React from 'react';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
-import Box from '@mui/material/Box';
+import axios from 'axios';
 import Modal from '@mui/material/Modal';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
@@ -13,6 +13,8 @@ import Stack from '@mui/material/Stack';
 import Paper from '@mui/material/Paper';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import { styled } from '@mui/material/styles';
+import Box from '@mui/material/Box';
+import { useToast } from "client/src/@/components/ui/toast/use-toast";
 
 const InputFile = styled('input')({
   display: 'none',
@@ -26,36 +28,70 @@ const validationSchema = Yup.object().shape({
     .required('Price is required')
     .positive('Price must be positive')
     .integer('Price must be an integer'),
-  tags: Yup.array().min(1, 'At least one tag is required'),
-  file: Yup.mixed().required('A file is required')
+  furnished: Yup.boolean(),
+  utilitiesIncluded: Yup.boolean(),
+  nearPublicTransport: Yup.boolean(),
+  petFriendly: Yup.boolean(),
+  nonSmoking: Yup.boolean(),
+  image: Yup.mixed().required('An image is required')
 });
 
 const CreateListingModal = ({ open, onClose }) => {
-  const predefinedTags = [
-    "Furnished",
-    "Utilities Included",
-    "Near Public Transport",
-    "Pet-Friendly",
-    "Non-Smoking"
-  ];
-
+  const {toast} = useToast()
   return (
     <Formik
       initialValues={{
         description: '',
         location: '',
         price: '',
-        tags: [],
-        file: null,
+        furnished: false,
+        utilitiesIncluded: false,
+        nearPublicTransport: false,
+        petFriendly: false,
+        nonSmoking: false,
+        image: null,
       }}
       validationSchema={validationSchema}
       onSubmit={(values, { setSubmitting }) => {
-        console.log(values);
-        onClose(); // Close modal after submission
-        setSubmitting(false);
+        const formData = new FormData();
+        formData.append('description', values.description);
+        formData.append('location', values.location);
+        formData.append('price', values.price.toString());
+        // formData.append('owner',)
+        if (values.image) {
+          formData.append('image', values.image);
+        }
+
+        // Collect tags based on checkbox values
+        const tags = [];
+        if (values.furnished) tags.push('Furnished');
+        if (values.utilitiesIncluded) tags.push('Utilities Included');
+        if (values.nearPublicTransport) tags.push('Near Public Transport');
+        if (values.petFriendly) tags.push('Pet Friendly');
+        if (values.nonSmoking) tags.push('Non Smoking');
+
+        // Append each tag to the formData
+        tags.forEach(tag => formData.append('tags', tag));
+
+        axios.post('http://localhost:4000/listing', formData)
+          .then(response => {
+            toast({
+              title: "Success",
+              description: "Created listing successfully",
+            });
+          })
+          .catch(error => {
+            toast({
+              title: "Failure",
+              description: error,
+            });
+          })
+          .finally(() => {
+            setSubmitting(false);
+          });
       }}
     >
-      {({ errors, touched, handleChange, setFieldValue, handleSubmit }) => (
+      {({ handleChange, setFieldValue, handleSubmit, errors, touched, values }) => (
         <Modal open={open} onClose={onClose}>
           <Form onSubmit={handleSubmit}>
             <Box sx={{
@@ -63,7 +99,7 @@ const CreateListingModal = ({ open, onClose }) => {
               top: '50%',
               left: '50%',
               transform: 'translate(-50%, -50%)',
-              width: 800, // Adjust as needed
+              width: 800,
               bgcolor: 'background.paper',
               boxShadow: 24,
               p: 4,
@@ -78,7 +114,7 @@ const CreateListingModal = ({ open, onClose }) => {
                 label="Description"
                 fullWidth
                 onChange={handleChange}
-                error={touched.description && Boolean(errors.description)}
+                error={touched.description && !!errors.description}
                 helperText={touched.description && errors.description}
                 sx={{ mb: 2 }}
               />
@@ -87,7 +123,7 @@ const CreateListingModal = ({ open, onClose }) => {
                 label="Location"
                 fullWidth
                 onChange={handleChange}
-                error={touched.location && Boolean(errors.location)}
+                error={touched.location && !!errors.location}
                 helperText={touched.location && errors.location}
                 sx={{ mb: 2 }}
               />
@@ -97,18 +133,22 @@ const CreateListingModal = ({ open, onClose }) => {
                 type="number"
                 fullWidth
                 onChange={handleChange}
-                error={touched.price && Boolean(errors.price)}
+                error={touched.price && !!errors.price}
                 helperText={touched.price && errors.price}
                 sx={{ mb: 2 }}
               />
               <FormGroup>
-                {predefinedTags.map(tag => (
+                {[
+                  { name: 'furnished', label: 'Furnished' },
+                  { name: 'utilitiesIncluded', label: 'Utilities Included' },
+                  { name: 'nearPublicTransport', label: 'Near Public Transport' },
+                  { name: 'petFriendly', label: 'Pet Friendly' },
+                  { name: 'nonSmoking', label: 'Non Smoking' }
+                ].map(field => (
                   <FormControlLabel
-                    key={tag}
-                    control={
-                      <Field as={Checkbox} type="checkbox" name="tags" value={tag} />
-                    }
-                    label={tag}
+                    key={field.name}
+                    control={<Field as={Checkbox} type="checkbox" name={field.name} />}
+                    label={field.label}
                   />
                 ))}
               </FormGroup>
@@ -118,20 +158,17 @@ const CreateListingModal = ({ open, onClose }) => {
                   id="contained-button-file"
                   type="file"
                   onChange={(event) => {
-                    setFieldValue("file", event.currentTarget.files[0]);
+                    setFieldValue("image", event.currentTarget.files[0]);
                   }}
                 />
-                <Button variant="contained" component="span" sx={{ mb: 2 }}>
+                <Button variant="contained" component="span">
                   Upload File
                 </Button>
               </label>
-              {errors.file && touched.file ? (
-                <Typography color="error" variant="body2">{errors.file}</Typography>
-              ) : null}
-              {values.file && (
+              {values.image && (
                 <Paper variant="outlined" sx={{ mt: 2, display: 'flex', alignItems: 'center' }}>
                   <InsertDriveFileIcon />
-                  <Typography>{values.file.name}</Typography>
+                  <Typography>{values.image.name}</Typography>
                 </Paper>
               )}
               <Stack direction="row" spacing={2} justifyContent="flex-end" sx={{ mt: 2 }}>

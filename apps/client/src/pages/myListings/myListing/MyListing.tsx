@@ -76,7 +76,7 @@ export const MyListing = () => {
                 <div className="mb-4">
                   <CustomInput label="Price*" name="price" disabled />
                 </div>
-                {values.tags.map((tag, idx) => (
+                {values?.tags?.map((tag, idx) => (
                   <div className="mb-4" key={idx}>
                     <CustomInput
                       label={`Tag ${idx + 1}`}

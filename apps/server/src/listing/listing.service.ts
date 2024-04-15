@@ -46,11 +46,11 @@ export class ListingService {
   }
 
   async finadAllListingOfOwner(userID) {
-    const listigs = await this.listingModel.find().exec();
-    const filtered = listigs.filter((x) =>
-      JSON.stringify(x.owner).localeCompare(userID),
-    );
-    return filtered;
+    const listigs = await this.listingModel.find({owner:userID}).exec();
+    // const filtered = listigs.filter((x) =>
+    //   JSON.stringify(x.owner).localeCompare(userID),
+    // );
+    return listigs;
   }
 
   private async uploadProfileImage(image: Express.Multer.File | undefined) {
