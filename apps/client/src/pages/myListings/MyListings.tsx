@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from 'react';  // Import useState
+import React, { useState, useEffect } from "react"; // Import useState
 import { useSelector } from "react-redux";
 import { ListingCard } from "../../components/listingCard/ListingCard";
 import { useNavigate } from "react-router-dom";
-import CreateListingModal from './create-listings'; // Make sure to import CreateListingModal
+import CreateListingModal from "./create-listings"; // Make sure to import CreateListingModal
 import axios from "axios";
-
+import { myListings } from "../../samples";
 export const MyListings = () => {
   const user = useSelector((state) => state.auth);
   const navigate = useNavigate();
-  const [isModalOpen, setIsModalOpen] = useState(false);  // State to control modal visibility
+  const [isModalOpen, setIsModalOpen] = useState(false); // State to control modal visibility
   const [myListings, setMyListings] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -16,8 +16,8 @@ export const MyListings = () => {
     navigate(`${id}`);
   };
 
-  const openModal = () => setIsModalOpen(true);  // Function to open the modal
-  const closeModal = () => setIsModalOpen(false);  // Function to close the modal
+  const openModal = () => setIsModalOpen(true); // Function to open the modal
+  const closeModal = () => setIsModalOpen(false); // Function to close the modal
   useEffect(() => {
     setIsLoading(true);
     if (user) {
@@ -53,11 +53,11 @@ export const MyListings = () => {
         )}
         {isLoading && <ListingCard variant="loading" />}
         <ListingCard
-          onClick={openModal}  // Set this to open the modal
+          onClick={openModal} // Set this to open the modal
           variant="add"
         />
       </div>
-      <CreateListingModal open={isModalOpen} onClose={closeModal} /> 
+      <CreateListingModal open={isModalOpen} onClose={closeModal} />
     </div>
   );
 };

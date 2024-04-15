@@ -36,7 +36,7 @@ export const Listings = () => {
             />
           ))
         : [...Array(10)].map((_, index) => (
-            <ListingCard key={index} variant="loading" />
+            <ListingCard key={`mock-${index}`} variant="loading" />
           ))}
     </div>
   );
