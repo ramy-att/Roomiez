@@ -23,7 +23,7 @@ export const Listing = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
-
+  const userId = useSelector((state) => state.auth.id);
   useEffect(() => {
     setIsLoading(true);
     if (id) {
@@ -45,6 +45,9 @@ export const Listing = () => {
       title: "Success!",
       description: "Candidate application sent successfully!",
     });
+    axios.put(`http://localhost:4000/listing/${id}/user/${userId}/apply`).then((res) => {
+     
+  });
     navigate(Routes.LISTINGS);
   };
 

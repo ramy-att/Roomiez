@@ -74,9 +74,9 @@ export class ListingService {
     if (!listing) {
       throw new NotFoundException('Listing not found');
     }
-    if(userId.localeCompare(listing.owner.toString())==1){
-      throw new ConflictException("owner applying for his appartment")
-    }
+    // if(userId.localeCompare(listing.owner.toString())==1){
+    //   throw new ConflictException("owner applying for his appartment")
+    // }
 
     // Check if the user has already applied
     if (listing.applicants.includes(userId)) {
@@ -130,6 +130,7 @@ export class ListingService {
   }
 
   async deleteApplicant(listingId: string, applicantId ){
+    console.log("a7aaaaaaaaaaaaaa")
     const listing = await this.listingModel.findById(listingId);
     if(!listing.applicants.includes(applicantId)){
      throw new NotFoundException("applicant is not found")

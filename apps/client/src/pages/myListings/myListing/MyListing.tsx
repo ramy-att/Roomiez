@@ -29,7 +29,7 @@ export const MyListing = () => {
 
  const showModal = (actionType, applicant) => {
   setAction(actionType);
-  setApplicantId(applicant.id);
+  setApplicantId(applicant._id);
   setEmail(applicant.email);  // Set email directly from the applicant object
   setIsModalVisible(true);
 };
@@ -60,18 +60,30 @@ export const MyListing = () => {
     const templateId = action === 'accept' ? 'template_uytjhsy' : 'template_r1hupue';
     emailjs.send('service_6s2f1ks', templateId, { to_email: email, applicant_name: "anyname", listing_location: listing.location }, 'QWMkXgL51rQo4-6sg')
       .then((response) => {
-        if(action==='accept'){
-        toast({
-          title: "Successful!",
-          description: "Acceptance email sent successfully to: "+email,
-        });}
-        else{        
-          toast({
-          title: "Successful!",
-          description: "rejection email sent successfully to: "+email,
-        });}
+       
+        
+        setApplicants(applicants.filter(x=> x.email!=email));
         setIsModalVisible(false);
         setEmail('');
+        if(action==='accept'){
+          toast({
+            title: "Successful!",
+            description: "Acceptance email sent successfully to: "+email,
+          });
+      
+          axios.put(`http://localhost:4000/listing/${id}/match`).then((res) => {
+           
+          });
+        }
+          else{        
+            toast({
+            title: "Successful!",
+            description: "rejection email sent successfully to: "+email,
+          });
+          console.log(applicantId)
+          axios.delete(`http://localhost:4000/listing/${id}/applicant/${applicantId}`).then((res) => {
+           setListing(res)
+          });}
       }, (error) => {
         toast({
           title: "rejected!",

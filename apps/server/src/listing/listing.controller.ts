@@ -45,12 +45,13 @@ export class ListingController {
     return this.listingService.findAllListingsUserAppliedTo(userId);
   }
 
-  @Put(':listingId/apply')
+  @Put(':listingId/user/:userId/apply')
   @HttpCode(204) // No Content status code if successful
   async applyToListing(
     @Param('listingId') listingId: string,
-    @Body('userId') userId: string,
+    @Param('userId') userId: string,
   ) {
+     console.log("a78a")
     return this.listingService.applyToListing(listingId, userId);
   }
 
