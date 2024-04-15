@@ -11,8 +11,8 @@ export const AppliedTo = () => {
   const [myListings, setMyListings] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  const onClickHandler = (idx: number) => {
-    navigate(`${idx}`);
+  const onClickHandler = (idx: string) => {
+    navigate(`/${idx}`, { replace: true });
   };
 
   useEffect(() => {
@@ -34,7 +34,7 @@ export const AppliedTo = () => {
         {!isLoading && myListings?.length
           ? myListings.map((listing, idx) => (
               <ListingCard
-                onClick={() => onClickHandler(idx)}
+                onClick={() => onClickHandler(listing._id)}
                 key={listing.description}
                 listing={listing}
               />

@@ -92,7 +92,11 @@ export const MyListing = () => {
         Listing: {listing?.location}
       </h1>
       <div className="flex justify-center">
-        <img width="50%" src={listing?.imageUrl} alt="Listing Image" />
+        <img
+          src={listing?.imageUrl}
+          alt="Listing Image"
+          className="mb-4 max-h-96	"
+        />
       </div>
       {listing && (
         <Formik initialValues={{ ...listing }}>

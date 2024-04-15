@@ -9,10 +9,19 @@ export interface UserEntity extends Document {
   name: string;
   imageUrl: string;
   imageId: string;
-  prefrences: {pref : string; exist: boolean};
-  phone: number;
+  phone: string;
+  description: string
   age: number;
-
+  Drinking: boolean;
+  Smoking: boolean;
+  PetFriendly: boolean;
+  Gym: boolean;
+  Walking: boolean;
+  Football: boolean;
+  Reading: boolean;
+  Cooking: boolean;
+  Gaming: boolean;
+  Nature: boolean;
 }
 
 interface UserModel extends mongoose.Model<UserEntity> {}
@@ -32,10 +41,19 @@ export const UserSchema = new mongoose.Schema<UserEntity, UserModel>(
     name: { type: String, required: true },
     imageUrl: { type: String, required: true },
     imageId: { type: String, required: true },
-    age : { type: Number },
-    prefrences : {type: Object},
-    phone :{type : Number },
-    
+    age: { type: Number },
+    phone: { type: String },
+    description: { type: String, required: false },
+    Drinking: { type: Boolean, default: false },
+    Smoking: { type: Boolean, default: false },
+    PetFriendly: { type: Boolean, default: false },
+    Gym: { type: Boolean, default: false },
+    Walking: { type: Boolean, default: false },
+    Football: { type: Boolean, default: false },
+    Reading: { type: Boolean, default: false },
+    Cooking: { type: Boolean, default: false },
+    Gaming: { type: Boolean, default: false },
+    Nature: { type: Boolean, default: false },
   },
   {
     timestamps: true, // This enables automatic createdAt and updatedAt fields
