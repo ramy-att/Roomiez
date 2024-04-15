@@ -1,14 +1,11 @@
 import { Button } from "client/src/@/components/ui/button";
 import { Form, Formik } from "formik";
-import waveEmoji from "../../assets/waving-hand-sign.svg";
 import spinner from "../../assets/spinner.svg";
 import { FormError } from "../../components/formError/FormError";
 import CustomInput from "../../components/customInput/CustomInput";
 import axios from "axios";
-import { Routes } from "../../utils";
-import { useDispatch } from "react-redux";
 import { useToast } from "client/src/@/components/ui/toast/use-toast";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { profileSchema } from "./profileUtils";
 import { useEffect, useRef, useState } from "react";
 import { Tag } from "../../components/tag/Tag";
@@ -69,9 +66,6 @@ export const EditProfile = () => {
     }
   }, [id, toast]);
 
-  // if (!profile) {
-  //   return <div>No profile data</div>; // Handle case where no profile data is available
-  // }
   return (
     <Formik
       initialValues={
@@ -167,7 +161,7 @@ export const EditProfile = () => {
               </div>
             </div>
             <div className="flex w-full gap-2">
-            <div className="mb-4 flex-grow">
+              <div className="mb-4 flex-grow">
                 <CustomInput
                   name="age"
                   label="Age"

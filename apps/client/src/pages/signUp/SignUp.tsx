@@ -4,23 +4,57 @@ import { Form, Formik } from "formik";
 import waveEmoji from "../../assets/waving-hand-sign.svg";
 import { default as spinner } from "../../assets/spinner.svg";
 import { signupSchema } from "./utils";
-import { FormError } from "../../components/formError/FormError";
 import axios from "axios";
-import CustomInput from "../../components/customInput/CustomInput";
 import { useToast } from "client/src/@/components/ui/toast/use-toast";
-import { Routes } from "../../utils";
+import { UserInfo } from "./subcomponents/UserInfo";
+import { UserPreferences } from "./subcomponents/UserPreferences";
+import { useState } from "react";
+import arrow from "../../assets/arrow.svg";
 
 interface ISignUp {
   name: string;
   email: string;
   password: string;
+  description: string;
+  age?: number;
+  phone?: number;
+  Drinking: boolean;
+  Smoking: boolean;
+  GoingOut: boolean;
+  Gym: boolean;
+  Walking: boolean;
+  Football: boolean;
+  Reading: boolean;
+  Cooking: boolean;
+  Gaming: boolean;
+  Nature: boolean;
 }
 export const SignUp = () => {
   const { toast } = useToast();
+  const [showUserPreferences, setShowUserPreferences] = useState(false);
 
   return (
     <Formik
-      initialValues={{ email: "", password: "", name: "" } as ISignUp}
+      initialValues={
+        {
+          email: "",
+          password: "",
+          name: "",
+          description: "",
+          age: undefined,
+          phone: undefined,
+          Drinking: false,
+          Smoking: false,
+          GoingOut: false,
+          Gym: false,
+          Walking: false,
+          Football: false,
+          Reading: false,
+          Cooking: false,
+          Gaming: false,
+          Nature: false,
+        } as ISignUp
+      }
       validationSchema={signupSchema}
       onSubmit={(values, { setSubmitting, resetForm }) => {
         axios
@@ -43,52 +77,63 @@ export const SignUp = () => {
           });
       }}
     >
-      {({ handleSubmit, isSubmitting }) => (
+      {({ handleSubmit, errors, isSubmitting, isValid, setFieldValue }) => (
         <div className="w-full h-screen flex justify-center items-center">
-          <Form className="p-10 rounded-2xl	bg-gray-300 md:w-2/4 w-3/4">
-            <h1 className="text-xl flex font-bold justify-center items-center gap-2 mb-4">
-              Join Now! <img className="w-10" src={waveEmoji} />
-            </h1>
-            <p className="text-md text-center mb-8">
-              Join Now to Meet New Roommates!
-            </p>
-            <div className="mb-4">
-              <CustomInput name="name" label="Name" placeholder="John Doe" />
-              <FormError name="name" />
-            </div>
-            <div className="mb-4">
-              <CustomInput
-                name="email"
-                label="Email"
-                type="email"
-                placeholder="john@email.com"
-              />
-              <FormError name="email" />
-            </div>
-            <div className="mb-6">
-              <CustomInput
-                label="Password"
-                name="password"
-                type="password"
-                placeholder="******"
-              />
-              <FormError name="password" />
-            </div>
-            <div className="mb-6 text-md italic underline text-center">
-              <a href={Routes.LOGIN}>Already Signed Up? Sign In Instead</a>
-            </div>
-            <div className="text-center">
-              <Button
-                type="submit"
-                onClick={() => handleSubmit()}
-                className="w-1/2 h-10"
-              >
-                {isSubmitting && (
-                  <img className="animate-spin w-4" src={spinner} />
-                )}
-                {isSubmitting ? "Signing you up..." : "Sign Up"}
-              </Button>
-            </div>
+          <Form className="p-10 rounded-2xl	bg-gray-300 md:w-2/4 w-3/4 h-[600px] md:h-[550px]">
+            {showUserPreferences ? (
+              <UserPreferences setFieldValue={setFieldValue} />
+            ) : (
+              <UserInfo />
+            )}
+            <>
+              {!showUserPreferences ? (
+                <div className="flex justify-end w-full">
+                  <Button
+                    disabled={Object.keys(errors).some((key) =>
+                      ["name", "email", "password"].includes(key)
+                    )}
+                    onClick={(e) => {
+                      setShowUserPreferences(true);
+                    }}
+                    type="button"
+                    className="flex-inline flex-row items-center gap-2 md:w-1/3 w-full h-10 px-4" // Adjust the padding value as needed
+                  >
+                    Continue
+                    <img
+                      src={arrow}
+                      style={{ transform: "rotate(180deg)" }}
+                      alt="Right Arrow"
+                    />
+                  </Button>
+                </div>
+              ) : (
+                <div className="flex gap-24 justify-between">
+                  <Button
+                    type="button"
+                    onClick={() => setShowUserPreferences(false)}
+                    className="flex-inline flex-row items-center gap-2 w-1/2 h-10"
+                  >
+                    <img src={arrow} alt="Right Arrow" />
+                    Previous
+                  </Button>
+                  <Button
+                    type="submit"
+                    disabled={!isValid}
+                    onClick={() => handleSubmit()}
+                    className="flex justify-center gap-2 items-center w-1/2 h-10"
+                  >
+                    {isSubmitting && (
+                      <img
+                        className="animate-spin w-4"
+                        src={spinner}
+                        alt="Spinner"
+                      />
+                    )}
+                    {isSubmitting ? "Signing you up..." : "Submit"}
+                  </Button>
+                </div>
+              )}
+            </>
           </Form>
         </div>
       )}
