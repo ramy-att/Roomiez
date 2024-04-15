@@ -90,9 +90,10 @@ export class ListingService {
     return listing;
   }
 
-  async MatchedRoom(listingId: string) {
+  async MatchedRoom(listingId: string, userID) {
     let listing = await this.listingModel.findById(listingId);
     listing.status = 'matched';
+    listing.applicants = listing.applicants.filter(x=>x?.toString()?.localeCompare(userID))
     await listing.save();
     return listing;
   }

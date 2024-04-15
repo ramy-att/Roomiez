@@ -66,23 +66,24 @@ export const MyListing = () => {
         setIsModalVisible(false);
         setEmail('');
         if(action==='accept'){
-          toast({
-            title: "Successful!",
-            description: "Acceptance email sent successfully to: "+email,
-          });
+        
       
-          axios.put(`http://localhost:4000/listing/${id}/match`).then((res) => {
-           
+          axios.put(`http://localhost:4000/listing/${id}/user/${applicantId}/match`).then((res) => {
+            toast({
+              title: "Successful!",
+              description: "Acceptance email sent successfully to: "+email,
+            });
           });
         }
           else{        
-            toast({
-            title: "Successful!",
-            description: "rejection email sent successfully to: "+email,
-          });
+           
           console.log(applicantId)
           axios.delete(`http://localhost:4000/listing/${id}/applicant/${applicantId}`).then((res) => {
            setListing(res)
+           toast({
+            title: "Successful!",
+            description: "rejection email sent successfully to: "+email,
+          });
           });}
       }, (error) => {
         toast({

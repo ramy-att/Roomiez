@@ -60,13 +60,13 @@ export class ListingController {
     return this.listingService.findAllListingsOfOwner(userId);
   }
 
-  @Put(':listingId/match')
+  @Put(':listingId/user/:userId/match')
   @HttpCode(204) // No Content status code if successful
   async matchListing(
     @Param('listingId') listingId: string,
-    @Body('userId') userId: string,
+    @Param('userId') userId: string,
   ) {
-    return this.listingService.MatchedRoom(listingId);
+    return this.listingService.MatchedRoom(listingId,userId);
   }
 
   @Delete(':listingId')
