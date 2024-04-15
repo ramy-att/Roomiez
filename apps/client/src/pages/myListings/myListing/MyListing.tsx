@@ -114,7 +114,7 @@ export const MyListing = () => {
         <Formik initialValues={{ ...listing }}>
           {({ handleSubmit, isSubmitting, values }) => (
             <div className="w-full mt-20 mb-10 flex justify-center items-center">
-              <Form className="p-10 rounded-2xl bg-gray-300 w-3/4 ">
+              <Form className="p-10 rounded-2xl bg-gray-300 w-1/2 ">
                 <h1 className="text-xl flex font-bold justify-center items-center gap-2 mb-4">
                   Listing's Info
                 </h1>
@@ -151,7 +151,7 @@ export const MyListing = () => {
           )}
         </Formik>
       )}
-      <div className="flex flex-col w-3/4 mb-10 justify-center mt-8">
+      <div className="flex flex-col w-1/2 mb-10 justify-center mt-8">
         <h1 className="text-xl font-bold text-center gap-2 mb-4">
           Applications
         </h1>

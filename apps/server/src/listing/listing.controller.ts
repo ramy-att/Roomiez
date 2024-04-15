@@ -57,7 +57,7 @@ export class ListingController {
 
   @Get('user/:userId/owner')
   findAllListingForOwner(@Param('userId') userId: string) {
-    return this.listingService.finadAllListingOfOwner(userId);
+    return this.listingService.findAllListingsOfOwner(userId);
   }
 
   @Put(':listingId/match')
@@ -75,8 +75,8 @@ export class ListingController {
   }
 
   @Get(':listingId/applicants')
-  getAllAplicants(@Param('listingId') listingId: string){
-    return this.listingService.getAllApplicants(listingId)
+  getAllAplicants(@Param('listingId') listingId: string) {
+    return this.listingService.getAllApplicants(listingId);
   }
 
   @Delete('/:listingId/applicant/:applicantId')
