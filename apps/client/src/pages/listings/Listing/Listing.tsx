@@ -42,6 +42,7 @@ export const Listing = () => {
   const handleSubmission = () => {
     setMessage("");
     toast({
+      variant: "success",
       title: "Success!",
       description: "Candidate application sent successfully!",
     });

@@ -63,6 +63,7 @@ export const SignUp = () => {
             toast({
               title: "Signed Up!",
               description: "Signed up successfully! Log in to get started!",
+              variant: "success",
             });
             resetForm();
           })
@@ -70,6 +71,7 @@ export const SignUp = () => {
             toast({
               title: "Could not sign up!",
               description: e.response.data.message,
+              variant: "error",
             });
           })
           .finally(() => {

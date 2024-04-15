@@ -58,6 +58,7 @@ export const EditProfile = () => {
         .catch((err) => {
           console.error("Failed to fetch profile:", err);
           toast({
+            variant: "error",
             title: "Error loading profile",
             description: "Failed to load user profile.",
           });
@@ -96,12 +97,14 @@ export const EditProfile = () => {
           .then((res) => {
             setProfile(res.data);
             toast({
+              variant: "success",
               title: "Profile Updated!",
               description: "Profile updated successfully!",
             });
           })
           .catch((e) => {
             toast({
+              variant: "error",
               title: "Could not update",
               description: e.response.data.message,
             });
