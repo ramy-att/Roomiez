@@ -1,10 +1,8 @@
-import React from "react";
-import { Formik, Form, Field } from "formik";
+import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import Modal from "@mui/material/Modal";
 import Typography from "@mui/material/Typography";
-// import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import { useToast } from "client/src/@/components/ui/toast/use-toast";
 import { useSelector } from "react-redux";
@@ -12,18 +10,14 @@ import CustomInput from "../../components/customInput/CustomInput";
 import { FormError } from "../../components/formError/FormError";
 import { Tag } from "../../components/tag/Tag";
 import { Button } from "client/src/@/components/ui/button";
+import { default as spinner } from "../../assets/spinner.svg";
 
 const tagValues = [
-  "Drinking",
-  "Smoking",
-  "PetFriendly",
-  "Gym",
-  "Walking",
-  "Football",
-  "Reading",
-  "Cooking",
-  "Gaming",
-  "Nature",
+  "furnished",
+  "utilitiesIncluded",
+  "nearPublicTransport",
+  "petFriendly",
+  "nonSmoking",
 ];
 
 // Yup validation schema
@@ -59,52 +53,50 @@ const CreateListingModal = ({ open, onClose }) => {
         nonSmoking: false,
         image: null,
       }}
+      validateOnMount
+      validateOnBlur
+      validateOnChange
+      enableReinitialize={true}
       validationSchema={validationSchema}
-      onSubmit={(values, { setSubmitting }) => {
-        const formData = new FormData();
-        formData.append("description", values.description);
-        formData.append("location", values.location);
-        formData.append("price", values.price.toString());
-        if (values.image) {
-          formData.append("image", values.image);
-        }
-
-        // Collect tags based on checkbox values
-        const tags = [];
-        if (values.furnished) tags.push("Furnished");
-        if (values.utilitiesIncluded) tags.push("Utilities Included");
-        if (values.nearPublicTransport) tags.push("Near Public Transport");
-        if (values.petFriendly) tags.push("Pet Friendly");
-        if (values.nonSmoking) tags.push("Non Smoking");
-
-        // Append each tag to the formData
-        tags.forEach((tag) => formData.append("tags", tag));
-
-        axios
-          .post("http://localhost:4000/listing", { ...formData, owner: userId })
-          .then((response) => {
-            toast({
-              title: "Success",
-              description: "Created listing successfully",
-            });
-          })
-          .catch((error) => {
-            toast({
-              title: "Failure",
-              description: error,
-            });
-          })
-          .finally(() => {
-            setSubmitting(false);
-          });
+      onSubmit={(values, { setSubmitting, resetForm }) => {
+        console.log(values);
+        // axios
+        //   .post(
+        //     "http://localhost:4000/listing",
+        //     { ...values, owner: userId },
+        //     {
+        //       headers: {
+        //         "Content-Type": "multipart/form-data",
+        //       },
+        //     }
+        //   )
+        //   .then((response) => {
+        //     toast({
+        //       variant: "success",
+        //       title: "Success",
+        //       description: "Created listing successfully",
+        //     });
+        //   })
+        //   .catch((error) => {
+        //     toast({
+        //       variant: "error",
+        //       title: "Failure",
+        //       description: error,
+        //     });
+        //   })
+        //   .finally(() => {
+        //     setSubmitting(false);
+        //     onClose();
+        //     resetForm();
+        //   });
       }}
     >
       {({
-        handleChange,
         setFieldValue,
+        isSubmitting,
         handleSubmit,
-        errors,
-        touched,
+        resetForm,
+        isValid,
         values,
       }) => (
         <Modal open={open} onClose={onClose}>
@@ -151,6 +143,14 @@ const CreateListingModal = ({ open, onClose }) => {
                 />
                 <FormError name="phone" />
               </div>
+              <div className="mb-5 flex-grow">
+                <CustomInput
+                  type="file"
+                  label="Listing Picture"
+                  name="anything"
+                  onChange={(e) => setFieldValue("image", e.target.files[0])}
+                />
+              </div>
               <div className="flex flex-wrap gap-2 mb-5">
                 {tagValues.map((value) => (
                   <Tag
@@ -163,10 +163,30 @@ const CreateListingModal = ({ open, onClose }) => {
                 ))}
               </div>
               <div className="flex w-full justify-end	 gap-10">
-                <Button type="button" color="secondary" onClick={onClose}>
+                <Button
+                  type="button"
+                  color="secondary"
+                  onClick={() => {
+                    onClose();
+                    resetForm();
+                  }}
+                >
                   Cancel
                 </Button>
-                <Button type="submit">Submit</Button>
+                <Button
+                  className="flex justify-center gap-2 items-center w-1/2 h-10"
+                  type="submit"
+                  disabled={!isValid && !isSubmitting}
+                >
+                  {isSubmitting && (
+                    <img
+                      className="animate-spin w-4"
+                      src={spinner}
+                      alt="Spinner"
+                    />
+                  )}
+                  {isSubmitting ? "Creating Listing..." : "Submit"}
+                </Button>
               </div>
             </Box>
           </Form>

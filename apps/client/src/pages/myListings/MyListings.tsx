@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react"; // Import useState
+import { useState, useEffect } from "react"; // Import useState
 import { useSelector } from "react-redux";
 import { ListingCard } from "../../components/listingCard/ListingCard";
 import { useNavigate } from "react-router-dom";
 import CreateListingModal from "./create-listings"; // Make sure to import CreateListingModal
 import axios from "axios";
-import { myListings } from "../../samples";
+
 export const MyListings = () => {
   const user = useSelector((state) => state.auth);
   const navigate = useNavigate();
@@ -16,10 +16,7 @@ export const MyListings = () => {
     navigate(`${id}`);
   };
 
-  const openModal = () => setIsModalOpen(true); // Function to open the modal
-  const closeModal = () => setIsModalOpen(false); // Function to close the modal
-  useEffect(() => {
-    setIsLoading(true);
+  const fetch = () => {
     if (user) {
       axios
         .get(`http://localhost:4000/listing/user/${user.id}/owner`)
@@ -30,6 +27,17 @@ export const MyListings = () => {
           setIsLoading(false);
         });
     }
+  };
+
+  const openModal = () => setIsModalOpen(true); // Function to open the modal
+  const closeModal = () => {
+    setIsModalOpen(false);
+    fetch();
+  }; // Function to close the modal
+
+  useEffect(() => {
+    setIsLoading(true);
+    fetch();
   }, [user]);
 
   return (
