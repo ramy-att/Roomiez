@@ -59,36 +59,35 @@ const CreateListingModal = ({ open, onClose }) => {
       enableReinitialize={true}
       validationSchema={validationSchema}
       onSubmit={(values, { setSubmitting, resetForm }) => {
-        console.log(values);
-        // axios
-        //   .post(
-        //     "http://localhost:4000/listing",
-        //     { ...values, owner: userId },
-        //     {
-        //       headers: {
-        //         "Content-Type": "multipart/form-data",
-        //       },
-        //     }
-        //   )
-        //   .then((response) => {
-        //     toast({
-        //       variant: "success",
-        //       title: "Success",
-        //       description: "Created listing successfully",
-        //     });
-        //   })
-        //   .catch((error) => {
-        //     toast({
-        //       variant: "error",
-        //       title: "Failure",
-        //       description: error,
-        //     });
-        //   })
-        //   .finally(() => {
-        //     setSubmitting(false);
-        //     onClose();
-        //     resetForm();
-        //   });
+        axios
+          .post(
+            "http://localhost:4000/listing",
+            { ...values, owner: userId },
+            {
+              headers: {
+                "Content-Type": "multipart/form-data",
+              },
+            }
+          )
+          .then((response) => {
+            toast({
+              variant: "success",
+              title: "Success",
+              description: "Created listing successfully",
+            });
+          })
+          .catch((error) => {
+            toast({
+              variant: "error",
+              title: "Failure",
+              description: error,
+            });
+          })
+          .finally(() => {
+            setSubmitting(false);
+            onClose();
+            resetForm();
+          });
       }}
     >
       {({
