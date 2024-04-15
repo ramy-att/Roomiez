@@ -15,6 +15,7 @@ import {
 import { Modal, Input, Button } from 'antd';
 import emailjs from 'emailjs-com';
 import axios from "axios";
+import { useToast } from "client/src/@/components/ui/toast/use-toast";
 
 export const MyListing = () => {
   const { id } = useParams();
@@ -22,14 +23,17 @@ export const MyListing = () => {
   const [email, setEmail] = useState('');
   const [action, setAction] = useState('');
   const [applicantId, setApplicantId] = useState(0);
+  const { toast } = useToast();
 
  // const listing = useMemo(() => (id ? myListings[parseInt(id, 10)] : myListings[0]), [id, myListings]);
 
-  const showModal = (actionType, id) => {
-    setAction(actionType);
-    setApplicantId(id);
-    setIsModalVisible(true);
-  };
+ const showModal = (actionType, applicant) => {
+  setAction(actionType);
+  setApplicantId(applicant.id);
+  setEmail(applicant.email);  // Set email directly from the applicant object
+  setIsModalVisible(true);
+};
+
 
   const [listing, setListing] = useState();
   const [applicants, setApplicants] = useState([]);
@@ -52,15 +56,27 @@ export const MyListing = () => {
     }
   }, [id]);
 
-  const handleEmailSend = (em: string, name: string ) => {
+  const handleEmailSend = () => {
     const templateId = action === 'accept' ? 'template_uytjhsy' : 'template_r1hupue';
-    emailjs.send('service_6s2f1ks', templateId, { to_email: em, applicant_name: name, listing_location: listing.location }, 'QWMkXgL51rQo4-6sg')
+    emailjs.send('service_6s2f1ks', templateId, { to_email: email, applicant_name: "anyname", listing_location: listing.location }, 'QWMkXgL51rQo4-6sg')
       .then((response) => {
-        console.log('Email sent successfully', response.text);
+        if(action==='accept'){
+        toast({
+          title: "Successful!",
+          description: "Acceptance email sent successfully to: "+email,
+        });}
+        else{        
+          toast({
+          title: "Successful!",
+          description: "rejection email sent successfully to: "+email,
+        });}
         setIsModalVisible(false);
         setEmail('');
       }, (error) => {
-        console.log('Failed to send email', error.text);
+        toast({
+          title: "rejected!",
+          description: "email sent successfully to: "+email,
+        });
       });
   };
 
@@ -71,6 +87,7 @@ export const MyListing = () => {
 
   return (
     <div className="flex flex-col justify-center items-center">
+
       <h1 className="text-3xl pt-10 text-center font-bold mb-8">
         Listing: {listing?.location}
       </h1>
@@ -133,22 +150,25 @@ export const MyListing = () => {
         </TableHeader>
        
         <TableBody>
-          {applicants?.map(applicant=>  (<TableRow>
-            <TableCell className="font-medium">{applicant.name}</TableCell>
-            <TableCell>{applicant.phone}</TableCell>
-            <TableCell>woof woof !</TableCell>
-            <TableCell>
-            <button onClick={() => showModal('accept', 1)}
-                className="text-white bg-green-500 hover:bg-green-700 px-3 py-1 rounded transition duration-300">
-                Accept
-              </button>
-              <button onClick={() => showModal('reject', 1)}
-                className="text-white bg-red-500 hover:bg-red-700 ml-2 px-3 py-1 rounded transition duration-300">
-                Reject
-              </button>
-            </TableCell>
-         
-          </TableRow>))}
+        {applicants.map((applicant) => (
+  <TableRow key={applicant.id}>
+    <TableCell className="font-medium">{applicant.name}</TableCell>
+    <TableCell>{applicant.phone}</TableCell>
+    <TableCell>{applicant.message}</TableCell>
+    <TableCell>
+      <button
+        onClick={() => showModal('accept', applicant)}
+        className="text-white bg-green-500 hover:bg-green-700 px-3 py-1 rounded transition duration-300">
+        Accept
+      </button>
+      <button
+        onClick={() => showModal('reject', applicant)}
+        className="text-white bg-red-500 hover:bg-red-700 ml-2 px-3 py-1 rounded transition duration-300">
+        Reject
+      </button>
+    </TableCell>
+  </TableRow>
+))}
           {/* Repeat the <TableRow> for other entries */}
         </TableBody>
       </Table>
