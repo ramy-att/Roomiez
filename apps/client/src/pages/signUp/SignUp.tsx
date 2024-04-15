@@ -1,7 +1,6 @@
 import { Button } from "client/src/@/components/ui/button";
 import "../../index.css";
 import { Form, Formik } from "formik";
-import waveEmoji from "../../assets/waving-hand-sign.svg";
 import { default as spinner } from "../../assets/spinner.svg";
 import { signupSchema } from "./utils";
 import axios from "axios";

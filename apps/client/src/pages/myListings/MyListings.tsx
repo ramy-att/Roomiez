@@ -1,33 +1,53 @@
+import { useState, useEffect } from "react"; // Import useState
 import { useSelector } from "react-redux";
 import { ListingCard } from "../../components/listingCard/ListingCard";
 import { useNavigate } from "react-router-dom";
-import React, { useEffect, useState } from "react";
+import CreateListingModal from "./create-listings"; // Make sure to import CreateListingModal
 import axios from "axios";
-import { myListings } from "../../samples";
+
+const tagValues = ["furnished", "utilities", "transport", "pet", "smoking"];
+
 export const MyListings = () => {
   const user = useSelector((state) => state.auth);
   const navigate = useNavigate();
+  const [isModalOpen, setIsModalOpen] = useState(false); // State to control modal visibility
   const [myListings, setMyListings] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
   const onClickHandler = (id: string) => {
     navigate(`${id}`);
   };
- 
-  useEffect(() => {
-    setIsLoading(true);
+
+  const fetch = () => {
     if (user) {
       axios
         .get(`http://localhost:4000/listing/user/${user.id}/owner`)
         .then((res) => {
-          setMyListings(res.data);
+          const listings = res.data.map((listing) => {
+            const tags = tagValues.filter((tagValue) => listing[tagValue]);
+            return {
+              ...listing,
+              tags: listing.tags?.length > 0 ? listing.tags : tags,
+            };
+          });
+          setMyListings(listings);
         })
         .finally(() => {
           setIsLoading(false);
         });
     }
-  }, [user]);
+  };
 
+  const openModal = () => setIsModalOpen(true); // Function to open the modal
+  const closeModal = () => {
+    setIsModalOpen(false);
+    fetch();
+  }; // Function to close the modal
+
+  useEffect(() => {
+    setIsLoading(true);
+    fetch();
+  }, [user]);
   return (
     <div className="flex flex-col pt-10 pb-10 pl-20">
       <h1 className="text-3xl font-bold mb-8">
@@ -49,10 +69,11 @@ export const MyListings = () => {
         )}
         {isLoading && <ListingCard variant="loading" />}
         <ListingCard
-          // onClick={} --> Omar, use this onClick
+          onClick={openModal} // Set this to open the modal
           variant="add"
         />
       </div>
+      <CreateListingModal open={isModalOpen} onClose={closeModal} />
     </div>
   );
 };
