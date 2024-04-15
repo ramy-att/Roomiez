@@ -21,7 +21,7 @@ export const Tag = ({
 
   return (
     <span
-      className={`py-1 px-3 h-full gap-1 inline-flex rounded-full ${
+      className={`py-1 px-3 h-full gap-1 inline-flex justify-center rounded-full ${
         clicked
           ? "bg-primary text-white cursor-pointer transition duration-300 ease-in-out"
           : "bg-gray-200 text-gray-700 cursor-pointer transition duration-300 ease-in-out"
@@ -32,7 +32,7 @@ export const Tag = ({
       }}
     >
       {text}
-      <img width="10" src={!clicked ? checkmark : close} />
+      <img width="10" src={!clicked ? "" : close} />
     </span>
   );
 };

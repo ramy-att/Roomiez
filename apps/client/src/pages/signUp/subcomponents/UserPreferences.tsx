@@ -37,6 +37,14 @@ export const UserPreferences = ({
         />
         <FormError name="description" />
       </div>
+      <div className="mb-4">
+        <CustomInput
+          type="file"
+          label="Profile Picture"
+          name="anything"
+          onChange={(e) => setFieldValue("image", e.target.files[0])}
+        />
+      </div>
       <div className="flex w-full gap-2">
         <div className="mb-4 flex-grow">
           <CustomInput name="age" label="Age" type="number" placeholder="18" />

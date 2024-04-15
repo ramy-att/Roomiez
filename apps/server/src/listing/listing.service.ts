@@ -45,11 +45,11 @@ export class ListingService {
     return filtered_listing;
   }
 
-  async finadAllListingOfOwner(userID) {
-    const listigs = await this.listingModel.find().exec();
-    const filtered = listigs.filter((x) =>
-      JSON.stringify(x.owner).localeCompare(userID),
-    );
+  async findAllListingsOfOwner(userID) {
+    const listings = await this.listingModel.find().exec();
+    const filtered = listings.filter((x) => {
+      JSON.stringify(x.owner).localeCompare(userID);
+    });
     return filtered;
   }
 

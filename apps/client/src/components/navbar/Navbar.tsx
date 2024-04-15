@@ -1,13 +1,15 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Routes } from "../../utils";
 import { signOut } from "../../slices/AuthSlice";
+import profile from "../../assets/profile.svg";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const auth = !!useSelector((state) => state.auth.token);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const location = useLocation();
 
   const logoutUser = () => {
@@ -66,15 +68,23 @@ const Navbar = () => {
             </div>
           </div>
           <div className="hidden md:block">
-            <div className="ml-4 flex items-center md:ml-6">
+            <div className="ml-4 space-x-4 flex items-center md:ml-6">
               {auth ? (
-                <a
-                  href={Routes.LISTINGS}
-                  onClick={logoutUser}
-                  className="text-white hover:text-gray-300 px-3 py-2 rounded-md text-sm font-medium"
-                >
-                  Logout
-                </a>
+                <>
+                  <img
+                    width="32"
+                    className={`cursor-pointer object-contain ${isActive(Routes.MY_PROFILE) ? "fill-gray-500" : ""}`}
+                    onClick={() => navigate(Routes.MY_PROFILE)}
+                    src={profile}
+                  />
+                  <a
+                    href={Routes.LISTINGS}
+                    onClick={logoutUser}
+                    className="text-white hover:text-gray-300 px-3 py-2 rounded-md text-sm font-medium"
+                  >
+                    Logout
+                  </a>
+                </>
               ) : (
                 <>
                   <a
@@ -171,6 +181,13 @@ const Navbar = () => {
                 } block px-3 py-2 rounded-md text-base font-medium`}
               >
                 My Listings
+              </a>
+              <a
+                onClick={logoutUser}
+                href={Routes.LISTINGS}
+                className="text-white hover:text-gray-300 block px-3 py-2 rounded-md text-base font-medium"
+              >
+                Profile
               </a>
               <a
                 onClick={logoutUser}

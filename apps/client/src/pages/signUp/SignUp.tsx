@@ -10,10 +10,13 @@ import { UserInfo } from "./subcomponents/UserInfo";
 import { UserPreferences } from "./subcomponents/UserPreferences";
 import { useState } from "react";
 import arrow from "../../assets/arrow.svg";
+import { Routes } from "../../utils";
+import { useNavigate } from "react-router-dom";
 
 interface ISignUp {
   name: string;
   email: string;
+  image: string;
   password: string;
   description: string;
   age?: number;
@@ -32,6 +35,7 @@ interface ISignUp {
 export const SignUp = () => {
   const { toast } = useToast();
   const [showUserPreferences, setShowUserPreferences] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <Formik
@@ -40,6 +44,7 @@ export const SignUp = () => {
           email: "",
           password: "",
           name: "",
+          image: "",
           description: "",
           age: undefined,
           phone: undefined,
@@ -56,9 +61,20 @@ export const SignUp = () => {
         } as ISignUp
       }
       validationSchema={signupSchema}
+      validateOnMount
+      validateOnBlur
+      validateOnChange
       onSubmit={(values, { setSubmitting, resetForm }) => {
         axios
-          .post("http://localhost:4000/user", { ...values })
+          .post(
+            "http://localhost:4000/user",
+            { ...values },
+            {
+              headers: {
+                "Content-Type": "multipart/form-data",
+              },
+            }
+          )
           .then((res) => {
             toast({
               title: "Signed Up!",
@@ -66,6 +82,7 @@ export const SignUp = () => {
               variant: "success",
             });
             resetForm();
+            navigate(Routes.LISTINGS);
           })
           .catch((e) => {
             toast({
