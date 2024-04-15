@@ -88,6 +88,7 @@ export class UserController {
     @Body() updateUserDto: UpdateUserDto,
     @UploadedFile() image: Express.Multer.File,
   ) {
+    console.log(image);
     return new UserModel(
       await this.userService.updateUser(id, updateUserDto, image),
     );

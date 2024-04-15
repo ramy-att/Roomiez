@@ -8,4 +8,5 @@ export enum Routes {
   SIGN_UP = "/signup",
   MY_LISTINGS = "/my-listings",
   MY_APPLICATIONS = "/my-applications",
+  MY_PROFILE = "/my-profile",
 }

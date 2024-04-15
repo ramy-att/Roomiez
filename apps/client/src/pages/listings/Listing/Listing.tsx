@@ -42,6 +42,7 @@ export const Listing = () => {
   const handleSubmission = () => {
     setMessage("");
     toast({
+      variant: "success",
       title: "Success!",
       description: "Candidate application sent successfully!",
     });
@@ -52,10 +53,10 @@ export const Listing = () => {
   if (isLoading) {
     return (
       <div className="flex flex-col items-center mt-10 h-screen">
-        <div className="bg-gray-300 h-96 w-3/4" />
-        <div className="w-3/4">
+        <div className="bg-gray-300 h-96 w-1/2" />
+        <div className="w-1/2">
           <div className="animate-pulse flex flex-col items-center">
-            <div className="flex mt-2 mb-8 justify-center w-3/4 gap-3">
+            <div className="flex mt-2 mb-8 justify-center w-1/2 gap-3">
               <div className="h-6 rounded-full w-1/4 py-1 px-2 inline-flex items-center	 text-center bg-gray-300 animate-pulse" />
               <div className="h-6 rounded-full w-1/4 py-1 px-2 inline-flex items-center	 text-center bg-gray-300 animate-pulse" />
               <div className="h-6 rounded-full w-1/4 py-1 px-2 inline-flex items-center	 text-center bg-gray-300 animate-pulse" />
@@ -69,7 +70,7 @@ export const Listing = () => {
           </div>
         </div>
         <div className="flex justify-center  ">
-          <div className="w-3/4 mx-auto mt-10 ">
+          <div className="w-1/2 mx-auto mt-10 ">
             <div className="animate-pulse">
               <div className="flex flex-row items-center gap-20 mb-4">
                 <div>
@@ -91,7 +92,7 @@ export const Listing = () => {
 
   // Render actual listing details
   return (
-    <div className="flex justify-center items-center flex-col w-3/4 mx-auto mt-10 px-6">
+    <div className="flex justify-center items-center flex-col w-1/2 mx-auto mt-10 px-6">
       <div className="flex flex-col items-center mb-8">
         <img
           src={listing?.imageUrl}
