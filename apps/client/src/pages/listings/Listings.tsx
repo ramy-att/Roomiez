@@ -2,7 +2,8 @@ import { useNavigate } from "react-router-dom";
 import { ListingCard } from "../../components/listingCard/ListingCard";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Tag } from "../../components/tag/Tag";
+
+const tagValues = ["furnished", "utilities", "transport", "pet", "smoking"];
 
 export const Listings = () => {
   const navigate = useNavigate();
@@ -18,7 +19,14 @@ export const Listings = () => {
     axios
       .get(`http://localhost:4000/listing`)
       .then((res) => {
-        setListings(res.data);
+        const listings = res.data.map((listing) => {
+          const tags = tagValues.filter((tagValue) => listing[tagValue]);
+          return {
+            ...listing,
+            tags: listing.tags?.length > 0 ? listing.tags : tags,
+          };
+        });
+        setListings(listings);
       })
       .finally(() => {
         setIsLoading(false);

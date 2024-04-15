@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import CreateListingModal from "./create-listings"; // Make sure to import CreateListingModal
 import axios from "axios";
 
+const tagValues = ["furnished", "utilities", "transport", "pet", "smoking"];
+
 export const MyListings = () => {
   const user = useSelector((state) => state.auth);
   const navigate = useNavigate();
@@ -21,7 +23,14 @@ export const MyListings = () => {
       axios
         .get(`http://localhost:4000/listing/user/${user.id}/owner`)
         .then((res) => {
-          setMyListings(res.data);
+          const listings = res.data.map((listing) => {
+            const tags = tagValues.filter((tagValue) => listing[tagValue]);
+            return {
+              ...listing,
+              tags: listing.tags?.length > 0 ? listing.tags : tags,
+            };
+          });
+          setMyListings(listings);
         })
         .finally(() => {
           setIsLoading(false);
