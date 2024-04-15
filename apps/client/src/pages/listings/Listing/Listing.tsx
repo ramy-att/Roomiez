@@ -41,14 +41,22 @@ export const Listing = () => {
 
   const handleSubmission = () => {
     setMessage("");
-    toast({
-      title: "Success!",
-      description: "Candidate application sent successfully!",
-    });
+  
     axios.put(`http://localhost:4000/listing/${id}/user/${userId}/apply`).then((res) => {
-     
+      toast({
+        title: "Success!",
+        description: "Candidate applied successfully!",
+      });
+      navigate(Routes.LISTINGS);
+  }).catch((error)=>{
+    console.log(error)
+    toast({
+      title: "Failed!",
+      description: error?.response?.data?.message,
+    });
+ 
   });
-    navigate(Routes.LISTINGS);
+  
   };
 
   // Render placeholders while loading
