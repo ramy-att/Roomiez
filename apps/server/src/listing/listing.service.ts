@@ -46,7 +46,7 @@ export class ListingService {
     return filtered_listing;
   }
  
-  async finadAllListingOfOwner(userID) {
+  async findAllListingsOfOwner(userID) {
     const listigs = await this.listingModel.find().exec();
     const filtered = listigs.filter((x) =>
       JSON.stringify(x.owner).localeCompare(userID),
@@ -131,7 +131,6 @@ export class ListingService {
   }
 
   async deleteApplicant(listingId: string, applicantId ){
-    console.log("a7aaaaaaaaaaaaaa")
     const listing = await this.listingModel.findById(listingId);
     if(!listing.applicants.includes(applicantId)){
      throw new NotFoundException("applicant is not found")
