@@ -26,7 +26,7 @@ export const MyListing = () => {
   const { toast } = useToast();
 
  // const listing = useMemo(() => (id ? myListings[parseInt(id, 10)] : myListings[0]), [id, myListings]);
-
+ 
  const showModal = (actionType, applicant) => {
   setAction(actionType);
   setApplicantId(applicant._id);

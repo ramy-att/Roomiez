@@ -13,7 +13,7 @@ export const MyListings = () => {
   const onClickHandler = (id: string) => {
     navigate(`${id}`);
   };
-
+ 
   useEffect(() => {
     setIsLoading(true);
     if (user) {

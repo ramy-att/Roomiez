@@ -45,7 +45,7 @@ export class ListingService {
     });
     return filtered_listing;
   }
-
+ 
   async finadAllListingOfOwner(userID) {
     const listigs = await this.listingModel.find().exec();
     const filtered = listigs.filter((x) =>
