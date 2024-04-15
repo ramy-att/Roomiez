@@ -14,7 +14,7 @@ import { Textarea } from "client/src/@/components/ui/textarea";
 import { Label } from "client/src/@/components/ui/label";
 import { Button } from "client/src/@/components/ui/button";
 import { useToast } from "client/src/@/components/ui/toast/use-toast";
- 
+
 export const Listing = () => {
   const auth = !!useSelector((state) => state.auth.token);
   const [message, setMessage] = useState("");
@@ -41,22 +41,23 @@ export const Listing = () => {
 
   const handleSubmission = () => {
     setMessage("");
-  
-    axios.put(`http://localhost:4000/listing/${id}/user/${userId}/apply`).then((res) => {
-      toast({
-        title: "Success!",
-        description: "Candidate applied successfully!",
+
+    axios
+      .put(`http://localhost:4000/listing/${id}/user/${userId}/apply`)
+      .then((res) => {
+        toast({
+          title: "Success!",
+          description: "Candidate applied successfully!",
+        });
+        navigate(Routes.LISTINGS);
+      })
+      .catch((error) => {
+        console.log(error);
+        toast({
+          title: "Failed!",
+          description: error?.response?.data?.message,
+        });
       });
-      navigate(Routes.LISTINGS);
-  }).catch((error)=>{
-    console.log(error)
-    toast({
-      title: "Failed!",
-      description: error?.response?.data?.message,
-    });
- 
-  });
-  
   };
 
   // Render placeholders while loading

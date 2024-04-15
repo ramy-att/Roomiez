@@ -12,13 +12,7 @@ import { Tag } from "../../components/tag/Tag";
 import { Button } from "client/src/@/components/ui/button";
 import { default as spinner } from "../../assets/spinner.svg";
 
-const tagValues = [
-  "furnished",
-  "utilitiesIncluded",
-  "nearPublicTransport",
-  "petFriendly",
-  "nonSmoking",
-];
+const tagValues = ["furnished", "utilities", "transport", "pet", "smoking"];
 
 // Yup validation schema
 const validationSchema = Yup.object().shape({
@@ -29,10 +23,10 @@ const validationSchema = Yup.object().shape({
     .positive("Price must be positive")
     .integer("Price must be an integer"),
   furnished: Yup.boolean(),
-  utilitiesIncluded: Yup.boolean(),
-  nearPublicTransport: Yup.boolean(),
-  petFriendly: Yup.boolean(),
-  nonSmoking: Yup.boolean(),
+  utilities: Yup.boolean(),
+  transport: Yup.boolean(),
+  pet: Yup.boolean(),
+  smoking: Yup.boolean(),
   image: Yup.mixed().required("An image is required"),
 });
 
@@ -47,10 +41,10 @@ const CreateListingModal = ({ open, onClose }) => {
         location: "",
         price: "",
         furnished: false,
-        utilitiesIncluded: false,
-        nearPublicTransport: false,
-        petFriendly: false,
-        nonSmoking: false,
+        utilities: false,
+        transport: false,
+        pet: false,
+        smoking: false,
         image: null,
       }}
       validateOnMount
@@ -150,7 +144,7 @@ const CreateListingModal = ({ open, onClose }) => {
                   onChange={(e) => setFieldValue("image", e.target.files[0])}
                 />
               </div>
-              <div className="flex flex-wrap gap-2 mb-5">
+              <div className="flex flex-wrap justify-center gap-2 mb-5">
                 {tagValues.map((value) => (
                   <Tag
                     key={value}
@@ -173,7 +167,7 @@ const CreateListingModal = ({ open, onClose }) => {
                   Cancel
                 </Button>
                 <Button
-                  className="flex justify-center gap-2 items-center w-1/2 h-10"
+                  className="flex justify-center gap-2 items-center"
                   type="submit"
                   disabled={!isValid && !isSubmitting}
                 >

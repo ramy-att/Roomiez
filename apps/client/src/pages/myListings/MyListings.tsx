@@ -39,7 +39,6 @@ export const MyListings = () => {
     setIsLoading(true);
     fetch();
   }, [user]);
-
   return (
     <div className="flex flex-col pt-10 pb-10 pl-20">
       <h1 className="text-3xl font-bold mb-8">

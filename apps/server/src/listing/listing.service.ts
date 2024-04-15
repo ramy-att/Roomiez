@@ -4,8 +4,6 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { CreateListingDto } from './dto/create-listing.dto';
-import { UpdateListingDto } from './dto/update-listing.dto';
 import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 import { Listing } from './entities/listing.entity';
 
@@ -26,7 +24,6 @@ export class ListingService {
   ) {}
   async create(createListingDto: Listing, image) {
     const { imageUrl, imageId } = await this.uploadProfileImage(image);
-    const ownerId = new Types.ObjectId(createListingDto.owner);
     const listing = new this.listingModel({
       ...createListingDto,
       applicants: [],
@@ -125,8 +122,6 @@ export class ListingService {
     // Resolve all promises to get the full list of applicant details
     const applicants = await Promise.all(applicantsPromises);
     return applicants;
-
-    return [];
   }
 
   async deleteApplicant(listingId: string, applicantId) {
@@ -134,7 +129,6 @@ export class ListingService {
     if (!listing.applicants.includes(applicantId)) {
       throw new NotFoundException('applicant is not found');
     }
-    console.log(listing);
     listing.applicants = listing.applicants.filter((x) =>
       x?.toString()?.localeCompare(applicantId),
     );
