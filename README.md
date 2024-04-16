@@ -26,4 +26,8 @@ Moetaz Mohamed 40175488
 4- Access the app from http://localhost:5173/ (please ensure the server and client are both running at the same time)
 
 ## Demo
+Please see below a demo of the application, showing all the functionalities, UI capabilities, and applied UI & UX concepts.
+
+https://github.com/ramy-att/Roomiez/assets/83047251/66e55ce5-d23d-4ba4-900f-22a7bf53a3c7
+
 
