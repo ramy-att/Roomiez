@@ -21,9 +21,13 @@ Moetaz Mohamed 40175488
 
 2- In the terminal in the main root of the folder run: npm install
 
-3- In the terminal in the main root of the folder run: npm run dev
+3- In the terminal navigate to apps/client: cd apps/client and run npm install
 
-4- Access the app from http://localhost:5173/ (please ensure the server and client are both running at the same time)
+4- In the terminal navigate to apps/server: cd apps/server and run npm install
+
+5- In the terminal in the main root of the folder run: npm run dev
+
+6- Access the app from http://localhost:5173/ (please ensure the server and client are both running at the same time)
 
 ## Demo
 Please see below a demo of the application, showing all the functionalities, UI capabilities, and applied UI & UX concepts.
